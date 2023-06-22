@@ -1,12 +1,12 @@
 import { HttpResponse } from './http-response';
 
 export namespace HttpPostClientParams {
-  export type Input = {
+  export type Input<T> = {
     url: string;
-    body?: object;
+    body?: T;
   };
 }
 
-export interface HttpPostClient {
-  post: (params: HttpPostClientParams.Input) => Promise<HttpResponse>;
+export interface HttpPostClient<T, R> {
+  post: (params: HttpPostClientParams.Input<T>) => Promise<HttpResponse<R>>;
 }

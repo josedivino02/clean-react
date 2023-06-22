@@ -9,7 +9,7 @@ export namespace HttpStatusCodeParams {
   }
 }
 
-export type HttpResponse = {
+export type HttpResponse<T> = {
   statusCode: HttpStatusCodeParams.OutPut;
-  body?: any;
+  body?: T;
 };
