@@ -1,9 +1,10 @@
-export namespace HttpPostClientTypes {
-  export type Params = {
+export namespace HttpPostClientParams {
+  export type Input = {
     url: string;
+    body?: object;
   };
 }
 
 export interface HttpPostClient {
-  post: (params: HttpPostClientTypes.Params) => Promise<void>;
+  post: (params: HttpPostClientParams.Input) => Promise<void>;
 }
