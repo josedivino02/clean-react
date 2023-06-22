@@ -1,3 +1,5 @@
+import { HttpResponse } from './http-response';
+
 export namespace HttpPostClientParams {
   export type Input = {
     url: string;
@@ -6,5 +8,5 @@ export namespace HttpPostClientParams {
 }
 
 export interface HttpPostClient {
-  post: (params: HttpPostClientParams.Input) => Promise<void>;
+  post: (params: HttpPostClientParams.Input) => Promise<HttpResponse>;
 }
