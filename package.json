@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "test:watch": "npm test -- --watch",
-    "test:staged": "npm test -- --findRelatedTests",
-    "test:ci": "npm test -- --coverage",
+    "test:watch": "npm t -- --watch",
+    "test:staged": "npm t -- --findRelatedTests",
+    "test:ci": "npm t -- --coverage",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "prepare": "husky install"
   },
   "keywords": [],

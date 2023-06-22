@@ -1,4 +1,4 @@
-import { HttpResponse } from './http-response';
+import { type HttpResponse } from './http-response';
 
 export namespace HttpPostClientParams {
   export type Input<T> = {

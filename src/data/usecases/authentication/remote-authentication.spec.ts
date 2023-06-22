@@ -1,21 +1,20 @@
-import { HttpStatusCodeParams } from '@/data/protocols/http/http-response';
-import { HttpPostClientSpy } from '@/data/test/mock-http-client';
+import { HttpStatusCodeParams } from '@/data/protocols/http';
+import { HttpPostClientSpy } from '@/data/test';
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication';
-import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error';
-import { UnexpectedError } from '@/domain/errors/unexpected-error';
-import { AccountModel } from '@/domain/models/account-model';
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
+import { type AccountModel } from '@/domain/models';
 import {
   mockAccountModel,
   mockAuthentication,
 } from '@/domain/test/mock-account';
+import { type AuthenticationParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
-import { AuthenticationParams } from 'domain/usecases/authentication';
 
 describe('RemoteAuthentication', () => {
   let sut: RemoteAuthentication;
   let httpPostClientSpy: HttpPostClientSpy<
-    AuthenticationParams.Input,
-    AccountModel
+  AuthenticationParams.Input,
+  AccountModel
   >;
   let url: string;
   let authenticationParams: AuthenticationParams.Input;
