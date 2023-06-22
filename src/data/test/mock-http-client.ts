@@ -1,13 +1,15 @@
 import {
-  HttpPostClientTypes,
+  HttpPostClientParams,
   type HttpPostClient,
 } from '../protocols/http/http-post-client';
 
 export class HttpPostClientSpy implements HttpPostClient {
   url?: string;
+  body?: object;
 
-  async post(params: HttpPostClientTypes.Params): Promise<void> {
+  async post(params: HttpPostClientParams.Input): Promise<void> {
     this.url = params.url;
+    this.body = params.body;
 
     await Promise.resolve();
   }
