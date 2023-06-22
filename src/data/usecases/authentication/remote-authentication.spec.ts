@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { HttpPostClientSpy } from '../../test/mock-http-client';
 import { RemoteAuthentication } from './remote-authentication';
 
@@ -7,7 +8,7 @@ describe('RemoteAuthentication', () => {
   let url: string;
 
   beforeAll(() => {
-    url = 'any_url';
+    url = faker.internet.url();
   });
 
   beforeEach(() => {
