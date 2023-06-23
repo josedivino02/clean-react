@@ -9,11 +9,17 @@ describe('AxiosHttpClient', () => {
   let url: string;
   let body: string;
   let sut: AxiosHttpClient;
+  let mockedAxiosResult: { data: string; status: number };
 
   beforeAll(() => {
     mockedAxios = axios as jest.Mocked<typeof axios>;
     url = faker.internet.url();
     body = faker.helpers.arrayElement(['any_data']);
+    mockedAxiosResult = {
+      data: faker.helpers.arrayElement(['any_data']),
+      status: faker.number.int(),
+    };
+    mockedAxios.post.mockResolvedValue(mockedAxiosResult);
   });
 
   beforeEach(() => {
@@ -24,5 +30,14 @@ describe('AxiosHttpClient', () => {
     await sut.post({ url, body });
 
     expect(mockedAxios.post).toHaveBeenCalledWith(url, body);
+  });
+
+  it('Should call axios with correct statusCode and body', async () => {
+    const httpResponse = await sut.post({ url, body });
+
+    expect(httpResponse).toEqual({
+      statusCode: mockedAxiosResult.status,
+      body: mockedAxiosResult.data,
+    });
   });
 });
