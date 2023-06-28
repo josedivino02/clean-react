@@ -1,7 +1,7 @@
-import { Footer, FormStatus, Input, LoginHeader } from '@/application/components';
-import Context from '@/application/contexts/form/form-context';
 import React, { useState } from 'react';
 import Styles from './login-styles.scss';
+import { Footer, FormStatus, Input, LoginHeader } from '@/application/components';
+import Context from '@/application/contexts/form/form-context';
 
 type StateProps = {
   isLoading: boolean,
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
           <h2>Login</h2>
           <Input type="email" name='email' placeholder='Digite seu e-mail' />
           <Input type="password" name='password' placeholder='Digite sua senha' />
-          <button className={Styles.submit} type='submit'>Entrar</button>
+          <button data-testid='submit' disabled className={Styles.submit} type='submit'>Entrar</button>
           <span className={Styles.link}>Criar conta</span>
           <FormStatus />
         </form>
