@@ -1,6 +1,7 @@
+import { Router } from '@/application/components';
+import '@/application/styles/global.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from '@/application/components';
 
 ReactDOM.render(
   <Router />,

@@ -1,7 +1,6 @@
+import { Login } from '@/application/pages'
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Login } from '@/application/pages'
-import '@/application/styles/global.scss'
 
 const Router: React.FC = () => {
   return (
