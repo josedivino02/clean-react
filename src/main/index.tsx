@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from '@/application/pages/login/login';
+import { Login } from '@/application/pages';
 
 ReactDOM.render(
   <Login />,
