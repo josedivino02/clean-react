@@ -1,22 +1,34 @@
 import Context from '@/application/contexts/form/form-context';
-import { render, type RenderResult } from '@testing-library/react';
+import { faker } from '@faker-js/faker';
+import { fireEvent, render, type RenderResult } from '@testing-library/react';
 import React from 'react';
 import Input from './input';
 
 describe('Input Component', () => {
   let sut: RenderResult
+  let input: HTMLInputElement
+  let fieldName: string
+
+  beforeAll(() => {
+    fieldName = faker.database.column()
+  })
 
   beforeEach(() => {
     sut = render(
       <Context.Provider value={{ state: {} }}>
-        <Input name='field' />
+        <Input name={fieldName} />
       </Context.Provider >
     )
+    input = sut.getByTestId(fieldName) as HTMLInputElement
   })
 
   it('should begin with readOnly', () => {
-    const input = sut.getByTestId('field') as HTMLInputElement
-
     expect(input.readOnly).toBe(true)
+  })
+
+  it('should remove readOnly on focus', () => {
+    fireEvent.focus(input)
+
+    expect(input.readOnly).toBe(false)
   })
 })
