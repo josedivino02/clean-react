@@ -107,4 +107,13 @@ describe('Login Components', () => {
       password
     })
   })
+
+  it('should call Authentication only once', () => {
+    validationStub.errorMessage = null
+
+    simulateValidSubmit(sut)
+    simulateValidSubmit(sut)
+
+    expect(authenticationSpy.callsCount).toBe(1)
+  })
 })
