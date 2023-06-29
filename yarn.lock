@@ -4173,6 +4173,11 @@ jest-leak-detector@^29.5.0:
     jest-get-type "^29.4.3"
     pretty-format "^29.5.0"
 
+jest-localstorage-mock@^2.4.26:
+  version "2.4.26"
+  resolved "https://registry.npmjs.org/jest-localstorage-mock/-/jest-localstorage-mock-2.4.26.tgz"
+  integrity sha512-owAJrYnjulVlMIXOYQIPRCCn3MmqI3GzgfZCXdD3/pmwrIvFMXcKVWZ+aMc44IzaASapg0Z4SEFxR+v5qxDA2w==
+
 jest-matcher-utils@^29.5.0:
   version "29.5.0"
   resolved "https://registry.npmjs.org/jest-matcher-utils/-/jest-matcher-utils-29.5.0.tgz"
