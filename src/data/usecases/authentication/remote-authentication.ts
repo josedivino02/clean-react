@@ -3,11 +3,11 @@ import {
   type HttpPostClient,
 } from '@/data/protocols/http';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
-import { type AccountModel } from '@/domain/models/account-model';
+import { type AccountModel } from '@/domain/models';
 import {
   type Authentication,
   type AuthenticationParams,
-} from '@/domain/usecases/authentication';
+} from '@/domain/usecases';
 
 export class RemoteAuthentication implements Authentication {
   constructor(

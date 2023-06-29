@@ -1,12 +1,12 @@
-import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory, type MemoryHistory } from 'history';
+import { Login } from '@/application/pages';
 import { AuthenticationSpy, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
-import Login from './login';
+import { createMemoryHistory, type MemoryHistory } from 'history';
 import 'jest-localstorage-mock';
+import React from 'react';
+import { Router } from 'react-router-dom';
 
 const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
   populateEmailField(sut, email)
