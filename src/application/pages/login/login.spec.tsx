@@ -1,6 +1,7 @@
 import { AuthenticationSpy, ValidationStub } from '@/application/test';
+import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
-import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
+import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
 import React from 'react';
 import Login from './login';
 
@@ -44,9 +45,7 @@ describe('Login Components', () => {
 
   it('Should start with initial state', () => {
     const errorWrap = sut.getByTestId('error-wrap')
-
     expect(errorWrap.childElementCount).toBe(0)
-
     const submitButton = sut.getByTestId('submit') as HTMLButtonElement
     expect(submitButton.disabled).toBe(true)
 
@@ -66,6 +65,7 @@ describe('Login Components', () => {
 
   it('should show valid email state if Validation succeeds', () => {
     validationStub.errorMessage = null
+
     populateEmailField(sut)
     simulateStatusForField(sut, 'email')
   })
@@ -79,6 +79,7 @@ describe('Login Components', () => {
 
   it('should enable submit button if form is valid', () => {
     validationStub.errorMessage = null
+
     populateEmailField(sut)
     populatePasswordField(sut)
 
@@ -97,6 +98,7 @@ describe('Login Components', () => {
 
   it('should call Authentication with correct values', () => {
     validationStub.errorMessage = null
+
     const email = faker.internet.email()
     const password = faker.internet.password()
 
@@ -113,5 +115,17 @@ describe('Login Components', () => {
     fireEvent.submit(sut.getByTestId('form'))
 
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  it('should present error if Authentication fails', async () => {
+    validationStub.errorMessage = null
+    const error = new InvalidCredentialsError()
+    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+    simulateValidSubmit(sut)
+    const errorWrap = sut.getByTestId('error-wrap')
+    await waitFor(() => errorWrap)
+    const mainError = sut.getByTestId('main-error')
+    expect(mainError.textContent).toBe(error.message)
+    expect(errorWrap.childElementCount).toBe(1)
   })
 })
