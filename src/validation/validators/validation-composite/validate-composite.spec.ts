@@ -17,7 +17,10 @@ describe('ValidationComposite', () => {
   beforeEach(() => {
     fieldValidationSpy.error = null;
     fieldValidationSpyTwo.error = null;
-    sut = new ValidationComposite([fieldValidationSpy, fieldValidationSpyTwo]);
+    sut = ValidationComposite.build([
+      fieldValidationSpy,
+      fieldValidationSpyTwo,
+    ]);
   });
 
   it('should return error if any validation fails', () => {
