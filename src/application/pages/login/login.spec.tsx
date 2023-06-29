@@ -1,19 +1,7 @@
 import { type RenderResult, render, fireEvent, cleanup } from '@testing-library/react'
 import React from 'react'
 import Login from './login'
-import { type Validation } from '@/application/contracts/validation'
-
-class ValidationSpy implements Validation {
-  errorMessage: string
-  fieldName: string
-  fieldValue: string
-
-  validate(fieldName: string, fieldValue: string): string {
-    this.fieldName = fieldName
-    this.fieldValue = fieldValue
-    return this.errorMessage
-  }
-}
+import { ValidationSpy } from '@/application/test'
 
 describe('Login Components', () => {
   let sut: RenderResult
