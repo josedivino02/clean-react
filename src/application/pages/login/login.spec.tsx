@@ -2,6 +2,7 @@ import { AuthenticationSpy, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
+import 'jest-localstorage-mock';
 import React from 'react';
 import Login from './login';
 
@@ -35,6 +36,7 @@ describe('Login Components', () => {
   let authenticationSpy: AuthenticationSpy
 
   beforeEach(() => {
+    localStorage.clear()
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
     validationStub.errorMessage = faker.word.words()
@@ -119,13 +121,27 @@ describe('Login Components', () => {
 
   it('should present error if Authentication fails', async () => {
     validationStub.errorMessage = null
+
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+
     simulateValidSubmit(sut)
+
     const errorWrap = sut.getByTestId('error-wrap')
     await waitFor(() => errorWrap)
     const mainError = sut.getByTestId('main-error')
+
     expect(mainError.textContent).toBe(error.message)
     expect(errorWrap.childElementCount).toBe(1)
+  })
+
+  it('should add accessToken to localstorage on success', async () => {
+    validationStub.errorMessage = null
+
+    simulateValidSubmit(sut)
+
+    await waitFor(() => sut.getByTestId('form'))
+
+    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
   })
 })
