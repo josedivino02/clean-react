@@ -1,6 +1,6 @@
 export class InvalidFieldError extends Error {
-  constructor(readonly fieldLabel: string) {
-    super(`O campo ${fieldLabel} é inválido`);
+  constructor() {
+    super('O campo é inválido');
     this.name = 'InvalidFieldError';
   }
 }
