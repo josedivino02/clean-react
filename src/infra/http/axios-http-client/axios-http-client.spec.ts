@@ -40,4 +40,20 @@ describe('AxiosHttpClient', () => {
       body: mockedAxiosResult.data,
     });
   });
+
+  it('Should call axios with correct statusCode and body on failure', async () => {
+    const httpResponse = await sut.post({ url, body });
+
+    mockedAxios.post.mockRejectedValueOnce({
+      response: {
+        data: faker.helpers.arrayElement(['any_data']),
+        status: faker.number.int(),
+      },
+    });
+
+    expect(httpResponse).toEqual({
+      statusCode: mockedAxiosResult.status,
+      body: mockedAxiosResult.data,
+    });
+  });
 });
