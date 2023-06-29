@@ -42,7 +42,7 @@ describe('Login Components', () => {
     localStorage.clear()
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
-    history = createMemoryHistory()
+    history = createMemoryHistory({ initialEntries: ['/login'] })
     validationStub.errorMessage = faker.word.words()
     sut = render(
       <Router location={''} navigator={history} >
@@ -151,6 +151,7 @@ describe('Login Components', () => {
     await waitFor(() => sut.getByTestId('form'))
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(history.location.pathname).toBe('/')
   })
 
   it('should go to singup page', async () => {
