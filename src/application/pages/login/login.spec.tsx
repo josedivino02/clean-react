@@ -1,8 +1,8 @@
-import { type RenderResult, render, fireEvent, cleanup } from '@testing-library/react'
-import React from 'react'
-import Login from './login'
-import { AuthenticationSpy, ValidationStub } from '@/application/test'
+import { AuthenticationSpy, ValidationStub } from '@/application/test';
 import { faker } from '@faker-js/faker';
+import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
+import React from 'react';
+import Login from './login';
 
 const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateEmailField(sut, email)
@@ -108,12 +108,10 @@ describe('Login Components', () => {
     })
   })
 
-  it('should call Authentication only once', () => {
-    validationStub.errorMessage = null
+  it('should call Authentication if form is invalid', () => {
+    populateEmailField(sut)
+    fireEvent.submit(sut.getByTestId('form'))
 
-    simulateValidSubmit(sut)
-    simulateValidSubmit(sut)
-
-    expect(authenticationSpy.callsCount).toBe(1)
+    expect(authenticationSpy.callsCount).toBe(0)
   })
 })
