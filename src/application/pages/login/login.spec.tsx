@@ -1,10 +1,12 @@
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory, type MemoryHistory } from 'history';
 import { AuthenticationSpy, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
-import 'jest-localstorage-mock';
-import React from 'react';
 import Login from './login';
+import 'jest-localstorage-mock';
 
 const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateEmailField(sut, email)
@@ -34,13 +36,19 @@ describe('Login Components', () => {
   let sut: RenderResult
   let validationStub: ValidationStub
   let authenticationSpy: AuthenticationSpy
+  let history: MemoryHistory
 
   beforeEach(() => {
     localStorage.clear()
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
+    history = createMemoryHistory()
     validationStub.errorMessage = faker.word.words()
-    sut = render(<Login validation={validationStub} authentication={authenticationSpy} />)
+    sut = render(
+      <Router location={''} navigator={history} >
+        <Login validation={validationStub} authentication={authenticationSpy} />
+      </Router>
+    )
   })
 
   afterEach(cleanup)
@@ -143,5 +151,14 @@ describe('Login Components', () => {
     await waitFor(() => sut.getByTestId('form'))
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+  })
+
+  it('should go to singup page', async () => {
+    validationStub.errorMessage = null
+
+    const register = sut.getByTestId('signup')
+    fireEvent.click(register)
+
+    expect(history.location.pathname).toBe('/signup')
   })
 })
