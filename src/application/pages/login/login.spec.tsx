@@ -10,6 +10,7 @@ describe('Login Components', () => {
 
   beforeEach(() => {
     validationSpy = new ValidationSpy()
+    validationSpy.errorMessage = faker.word.words()
     sut = render(<Login validation={validationSpy} />)
   })
 
@@ -24,7 +25,7 @@ describe('Login Components', () => {
     expect(submitButton.disabled).toBe(true)
 
     const emailStatus = sut.getByTestId('email-status')
-    expect(emailStatus.title).toBe('Campo obrigatório')
+    expect(emailStatus.title).toBe(validationSpy.errorMessage)
     expect(emailStatus.textContent).toBe('🔴')
 
     const passwordStatus = sut.getByTestId('password-status')
@@ -50,5 +51,15 @@ describe('Login Components', () => {
 
     expect(validationSpy.fieldName).toBe('password')
     expect(validationSpy.fieldValue).toBe(password)
+  })
+
+  it('should show email error if Validation fails', () => {
+    const emailInput = sut.getByTestId('email')
+
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+
+    const emailStatus = sut.getByTestId('email-status')
+    expect(emailStatus.title).toBe(validationSpy.errorMessage)
+    expect(emailStatus.textContent).toBe('🔴')
   })
 })
