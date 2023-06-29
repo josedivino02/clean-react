@@ -1,25 +1,37 @@
 import { ValidationComposite } from './validation-composite';
 import { FieldValidationSpy } from '../test/mock-field-validation';
+import { faker } from '@faker-js/faker';
 
 describe('ValidationComposite', () => {
   let fieldValidationSpy: FieldValidationSpy;
   let fieldValidationSpyTwo: FieldValidationSpy;
   let sut: ValidationComposite;
+  let fieldName: string;
 
   beforeAll(() => {
-    fieldValidationSpy = new FieldValidationSpy('any_field');
-    fieldValidationSpyTwo = new FieldValidationSpy('any_field');
-    fieldValidationSpy.error = new Error('first_error_message');
-    fieldValidationSpyTwo.error = new Error('second_error_message');
+    fieldName = faker.database.column();
+    fieldValidationSpy = new FieldValidationSpy(fieldName);
+    fieldValidationSpyTwo = new FieldValidationSpy(fieldName);
   });
 
   beforeEach(() => {
+    fieldValidationSpy.error = null;
+    fieldValidationSpyTwo.error = null;
     sut = new ValidationComposite([fieldValidationSpy, fieldValidationSpyTwo]);
   });
 
   it('should return error if any validation fails', () => {
-    const error = sut.validate('any_field', 'any_value');
+    const errorMessage = faker.word.words();
+    fieldValidationSpy.error = new Error(errorMessage);
+    fieldValidationSpyTwo.error = new Error(faker.word.words());
+    const error = sut.validate(fieldName, faker.word.sample());
 
-    expect(error).toBe('first_error_message');
+    expect(error).toBe(errorMessage);
+  });
+
+  it('should return falsy if there is no error', () => {
+    const error = sut.validate(fieldName, faker.word.sample());
+
+    expect(error).toBeFalsy();
   });
 });
