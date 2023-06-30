@@ -3,11 +3,20 @@ import { faker } from '@faker-js/faker';
 import { LocalSaveAccessToken } from './local-save-access-token';
 
 describe('LocalSaveAccessToken', () => {
-  it('Should call SetStorage with correct value', async () => {
-    const setStorageSpy = new SetStorageSpy();
-    const sut = new LocalSaveAccessToken(setStorageSpy);
-    const accessToken = faker.string.uuid();
+  let setStorageSpy: SetStorageSpy;
+  let sut: LocalSaveAccessToken;
+  let accessToken: string;
 
+  beforeAll(() => {
+    accessToken = faker.string.uuid();
+  });
+
+  beforeEach(() => {
+    setStorageSpy = new SetStorageSpy();
+    sut = new LocalSaveAccessToken(setStorageSpy);
+  });
+
+  it('Should call SetStorage with correct value', async () => {
     await sut.save(accessToken);
 
     expect(setStorageSpy.key).toBe('accessToken');
