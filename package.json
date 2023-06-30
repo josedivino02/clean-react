@@ -11,7 +11,8 @@
     "test:ci": "npm t -- --coverage",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "check": "npm-check -u -s"
   },
   "keywords": [],
   "author": "",
