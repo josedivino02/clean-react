@@ -1,10 +1,9 @@
 import { Login } from '@/application/pages';
-import { AuthenticationSpy, ValidationStub } from '@/application/test';
+import { AuthenticationSpy, SaveAccessTokenMock, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
 import { createMemoryHistory, type MemoryHistory } from 'history';
-import 'jest-localstorage-mock';
 import React from 'react';
 import { Router } from 'react-router-dom';
 
@@ -59,16 +58,20 @@ describe('Login Components', () => {
   let validationStub: ValidationStub
   let authenticationSpy: AuthenticationSpy
   let history: MemoryHistory
+  let saveAccessTokenMock: SaveAccessTokenMock
 
   beforeEach(() => {
-    localStorage.clear()
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
+    saveAccessTokenMock = new SaveAccessTokenMock()
     history = createMemoryHistory({ initialEntries: ['/login'] })
     validationStub.errorMessage = faker.word.words()
     sut = render(
       <Router location={''} navigator={history} >
-        <Login validation={validationStub} authentication={authenticationSpy} />
+        <Login
+          validation={validationStub}
+          authentication={authenticationSpy}
+          saveAccessToken={saveAccessTokenMock} />
       </Router>
     )
   })
@@ -159,12 +162,12 @@ describe('Login Components', () => {
     testErrorWrapChildCount(sut, 1)
   })
 
-  it('should add accessToken to localstorage on success', async () => {
+  it('should call SaveAccessToken on success', async () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit(sut)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
     expect(history.location.pathname).toBe('/')
   })
 
