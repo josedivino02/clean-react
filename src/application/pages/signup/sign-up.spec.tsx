@@ -155,4 +155,13 @@ describe('SignUp Components', () => {
     expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
     expect(history.location.pathname).toBe('/')
   })
+
+  it('should go to login page', async () => {
+    validationStub.errorMessage = null
+
+    const loginLink = sut.getByTestId('login')
+    fireEvent.click(loginLink)
+
+    expect(history.location.pathname).toBe('/login')
+  })
 })

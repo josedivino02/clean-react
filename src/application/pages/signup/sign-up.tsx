@@ -3,7 +3,7 @@ import Context from '@/application/contexts/form/form-context';
 import { type Validation } from '@/application/contracts/validation';
 import { type AddAccount, type SaveAccessToken } from '@/domain/usecases';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Styles from './sign-up-styles.scss';
 
 type Props = {
@@ -75,7 +75,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
           <Input type='password' name='password' placeholder='Digite sua senha' />
           <Input type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
           <button data-testid='submit' disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError} className={Styles.submit} type='submit'>Entrar</button>
-          <span className={Styles.link}>Voltar para Login</span>
+          <Link data-testid="login" to='/login' className={Styles.link}>Voltar para Login</Link>
           <FormStatus />
         </form>
       </Context.Provider>
