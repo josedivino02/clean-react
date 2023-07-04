@@ -29,4 +29,10 @@ describe('RemoteAddAccount', () => {
 
     expect(httpPostClientSpy.url).toBe(url);
   });
+
+  it('Should call HttpClient with correct body', async () => {
+    await sut.add(addAccountParams);
+
+    expect(httpPostClientSpy.body).toEqual(addAccountParams);
+  });
 });
