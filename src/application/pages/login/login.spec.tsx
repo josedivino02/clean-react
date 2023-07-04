@@ -8,18 +8,13 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 
 const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
-  populateEmailField(sut, email)
+  Helper.populateField(sut, 'email', email)
   populatePasswordField(sut, password)
 
   const form = sut.getByTestId('form')
   fireEvent.submit(form)
 
   await waitFor(() => form)
-}
-
-const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
-  const emailInput = sut.getByTestId('email')
-  fireEvent.input(emailInput, { target: { value: email } })
 }
 
 const populatePasswordField = (sut: RenderResult, password = faker.internet.password()): void => {
@@ -71,7 +66,7 @@ describe('Login Components', () => {
   })
 
   it('should show email error if Validation fails', () => {
-    populateEmailField(sut)
+    Helper.populateField(sut, 'email')
     Helper.testStatusForField(sut, 'email', validationStub.errorMessage)
   })
 
@@ -83,7 +78,7 @@ describe('Login Components', () => {
   it('should show valid email state if Validation succeeds', () => {
     validationStub.errorMessage = null
 
-    populateEmailField(sut)
+    Helper.populateField(sut, 'email')
     Helper.testStatusForField(sut, 'email')
   })
 
@@ -97,7 +92,7 @@ describe('Login Components', () => {
   it('should enable submit button if form is valid', () => {
     validationStub.errorMessage = null
 
-    populateEmailField(sut)
+    Helper.populateField(sut, 'email')
     populatePasswordField(sut)
     Helper.testButtonIsDisabled(sut, 'submit', false)
   })

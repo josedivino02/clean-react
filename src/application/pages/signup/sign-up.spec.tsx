@@ -1,13 +1,8 @@
 import { SignUp } from '@/application/pages';
 import { Helper, ValidationStub } from '@/application/test';
 import { faker } from '@faker-js/faker';
-import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
+import { cleanup, render, type RenderResult } from '@testing-library/react';
 import React from 'react';
-
-const populateField = (sut: RenderResult, fieldName: string, value = faker.word.words()): void => {
-  const input = sut.getByTestId(fieldName)
-  fireEvent.input(input, { target: { value } })
-}
 
 describe('SignUp Components', () => {
   let sut: RenderResult
@@ -37,7 +32,7 @@ describe('SignUp Components', () => {
   })
 
   it('should show name error if Validation fails', () => {
-    populateField(sut, 'name')
+    Helper.populateField(sut, 'name')
     Helper.testStatusForField(sut, 'name', validationStub.errorMessage)
   })
 })
