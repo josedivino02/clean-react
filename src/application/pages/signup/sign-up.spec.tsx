@@ -46,8 +46,31 @@ describe('SignUp Components', () => {
     Helper.testStatusForField(sut, 'password', validationStub.errorMessage)
   })
 
-  it('should show passwordConfirmation error if Validation fails', () => {
+  it('should show name error if Validation succeeds', () => {
+    validationStub.errorMessage = null
+
+    Helper.populateField(sut, 'name')
+    Helper.testStatusForField(sut, 'name')
+  })
+
+  it('should show email error if Validation succeeds', () => {
+    validationStub.errorMessage = null
+
+    Helper.populateField(sut, 'email')
+    Helper.testStatusForField(sut, 'email')
+  })
+
+  it('should show password error if Validation succeeds', () => {
+    validationStub.errorMessage = null
+
+    Helper.populateField(sut, 'password')
+    Helper.testStatusForField(sut, 'password')
+  })
+
+  it('should show passwordConfirmation error if Validation succeeds', () => {
+    validationStub.errorMessage = null
+
     Helper.populateField(sut, 'passwordConfirmation')
-    Helper.testStatusForField(sut, 'passwordConfirmation', validationStub.errorMessage)
+    Helper.testStatusForField(sut, 'passwordConfirmation')
   })
 })
