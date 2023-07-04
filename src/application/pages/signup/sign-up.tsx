@@ -1,16 +1,20 @@
 import { Footer, FormStatus, Input, LoginHeader } from '@/application/components';
 import Context from '@/application/contexts/form/form-context';
 import { type Validation } from '@/application/contracts/validation';
-import { type AddAccount } from '@/domain/usecases';
+import { type AddAccount, type SaveAccessToken } from '@/domain/usecases';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Styles from './sign-up-styles.scss';
 
 type Props = {
   validation: Validation,
-  addAccount: AddAccount
+  addAccount: AddAccount,
+  saveAccessToken: SaveAccessToken
 }
 
-const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     isLoading: false,
     name: '',
@@ -41,12 +45,16 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
       if (state.isLoading || state.emailError || state.nameError || state.passwordError || state.passwordConfirmationError) return
       setState({ ...state, isLoading: true })
 
-      await addAccount.add({
+      const account = await addAccount.add({
         name: state.name,
         email: state.email,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
+
+      await saveAccessToken.save(account.accessToken)
+
+      navigate('/')
     } catch (error) {
       setState({
         ...state,
