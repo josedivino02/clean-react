@@ -17,4 +17,9 @@ describe('CompareFieldsValidation', () => {
     const error = sut.validate(faker.word.words());
     expect(error).toEqual(new InvalidFieldError(field));
   });
+
+  it('should return falsy if field is not empty', () => {
+    const error = sut.validate(valueToCompare);
+    expect(error).toBeFalsy();
+  });
 });
