@@ -53,7 +53,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError());
   });
 
-  it('Should throw  UnexpectedError if HttpPostClient return 400', async () => {
+  it('Should throw UnexpectedError if HttpPostClient return 400', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.badRequest,
     };
@@ -63,7 +63,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  it('Should throw  UnexpectedError if HttpPostClient return 500', async () => {
+  it('Should throw UnexpectedError if HttpPostClient return 500', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.serverError,
     };
@@ -73,7 +73,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  it('Should throw  UnexpectedError if HttpPostClient return 405', async () => {
+  it('Should throw UnexpectedError if HttpPostClient return 405', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.notFound,
     };
