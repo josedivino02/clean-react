@@ -123,7 +123,7 @@ describe('Login Components', () => {
     validationStub.errorMessage = null
 
     const error = new InvalidCredentialsError()
-    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
 
     await simulateValidSubmit(sut)
 
