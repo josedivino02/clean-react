@@ -9,17 +9,12 @@ import { Router } from 'react-router-dom';
 
 const simulateValidSubmit = async (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
   Helper.populateField(sut, 'email', email)
-  populatePasswordField(sut, password)
+  Helper.populateField(sut, 'password', password)
 
   const form = sut.getByTestId('form')
   fireEvent.submit(form)
 
   await waitFor(() => form)
-}
-
-const populatePasswordField = (sut: RenderResult, password = faker.internet.password()): void => {
-  const passwordInput = sut.getByTestId('password')
-  fireEvent.input(passwordInput, { target: { value: password } })
 }
 
 const testElementExist = (sut: RenderResult, fieldName: string): void => {
@@ -71,7 +66,7 @@ describe('Login Components', () => {
   })
 
   it('should show password error if Validation fails', () => {
-    populatePasswordField(sut)
+    Helper.populateField(sut, 'password')
     Helper.testStatusForField(sut, 'password', validationStub.errorMessage)
   })
 
@@ -85,7 +80,7 @@ describe('Login Components', () => {
   it('should show valid password state if Validation succeeds', () => {
     validationStub.errorMessage = null
 
-    populatePasswordField(sut)
+    Helper.populateField(sut, 'password')
     Helper.testStatusForField(sut, 'email')
   })
 
@@ -93,7 +88,7 @@ describe('Login Components', () => {
     validationStub.errorMessage = null
 
     Helper.populateField(sut, 'email')
-    populatePasswordField(sut)
+    Helper.populateField(sut, 'password')
     Helper.testButtonIsDisabled(sut, 'submit', false)
   })
 

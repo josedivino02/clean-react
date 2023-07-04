@@ -26,7 +26,7 @@ describe('SignUp Components', () => {
     Helper.testButtonIsDisabled(sut, 'submit', true)
 
     Helper.testStatusForField(sut, 'name', validationStub.errorMessage)
-    Helper.testStatusForField(sut, 'email', 'Campo obrigatório')
+    Helper.testStatusForField(sut, 'email', validationStub.errorMessage)
     Helper.testStatusForField(sut, 'password', 'Campo obrigatório')
     Helper.testStatusForField(sut, 'passwordConfirmation', 'Campo obrigatório')
   })
@@ -34,5 +34,10 @@ describe('SignUp Components', () => {
   it('should show name error if Validation fails', () => {
     Helper.populateField(sut, 'name')
     Helper.testStatusForField(sut, 'name', validationStub.errorMessage)
+  })
+
+  it('should show email error if Validation fails', () => {
+    Helper.populateField(sut, 'email')
+    Helper.testStatusForField(sut, 'email', validationStub.errorMessage)
   })
 })
