@@ -17,11 +17,6 @@ const simulateValidSubmit = async (sut: RenderResult, name = faker.person.fullNa
   await waitFor(() => form)
 }
 
-const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
-  const element = sut.getByTestId(fieldName)
-  expect(element.textContent).toBe(text)
-}
-
 describe('SignUp Components', () => {
   let sut: RenderResult
   let validationStub: ValidationStub
@@ -140,7 +135,7 @@ describe('SignUp Components', () => {
 
     await simulateValidSubmit(sut)
 
-    testElementText(sut, 'main-error', error.message)
+    Helper.testElementText(sut, 'main-error', error.message)
     Helper.testChildCount(sut, 'error-wrap', 1)
   })
 })
