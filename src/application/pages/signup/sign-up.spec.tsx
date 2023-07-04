@@ -1,5 +1,5 @@
 import { SignUp } from '@/application/pages';
-import { Helper, ValidationStub } from '@/application/test';
+import { AddAccountSpy, Helper, ValidationStub } from '@/application/test';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
 import React from 'react';
@@ -19,15 +19,17 @@ const simulateValidSubmit = async (sut: RenderResult, name = faker.person.fullNa
 describe('SignUp Components', () => {
   let sut: RenderResult
   let validationStub: ValidationStub
+  let addAccountSpy: AddAccountSpy
 
   beforeAll(() => {
     validationStub = new ValidationStub()
+    addAccountSpy = new AddAccountSpy()
     validationStub.errorMessage = faker.word.words()
   })
 
   beforeEach(() => {
     sut = render(
-      <SignUp validation={validationStub} />
+      <SignUp validation={validationStub} addAccount={addAccountSpy} />
     )
   })
 
@@ -101,5 +103,16 @@ describe('SignUp Components', () => {
 
     await simulateValidSubmit(sut)
     Helper.testElementExist(sut, 'spinner')
+  })
+
+  it('should call AddAccount with correct values', async () => {
+    validationStub.errorMessage = null
+    const name = faker.person.fullName()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    await simulateValidSubmit(sut, name, email, password)
+
+    expect(addAccountSpy.params).toEqual({ name, email, password, passwordConfirmation: password })
   })
 })
