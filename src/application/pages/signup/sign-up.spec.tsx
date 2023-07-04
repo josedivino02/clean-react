@@ -16,11 +16,6 @@ const simulateValidSubmit = async (sut: RenderResult, name = faker.person.fullNa
   await waitFor(() => form)
 }
 
-const testElementExist = (sut: RenderResult, fieldName: string): void => {
-  const element = sut.getByTestId(fieldName)
-  expect(element).toBeTruthy()
-}
-
 describe('SignUp Components', () => {
   let sut: RenderResult
   let validationStub: ValidationStub
@@ -105,6 +100,6 @@ describe('SignUp Components', () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit(sut)
-    testElementExist(sut, 'spinner')
+    Helper.testElementExist(sut, 'spinner')
   })
 })
