@@ -67,4 +67,14 @@ describe('RemoteAddAccount', () => {
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
+
+  it('Should throw UnexpectedError if HttpPostClient return 404', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCodeParams.OutPut.notFound,
+    };
+
+    const promise = sut.add(addAccountParams);
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
 });

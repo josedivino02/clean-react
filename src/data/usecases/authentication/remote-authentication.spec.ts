@@ -73,7 +73,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  it('Should throw UnexpectedError if HttpPostClient return 405', async () => {
+  it('Should throw UnexpectedError if HttpPostClient return 404', async () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.notFound,
     };
