@@ -21,13 +21,10 @@ describe('SignUp Components', () => {
   let validationStub: ValidationStub
   let addAccountSpy: AddAccountSpy
 
-  beforeAll(() => {
+  beforeEach(() => {
     validationStub = new ValidationStub()
     addAccountSpy = new AddAccountSpy()
     validationStub.errorMessage = faker.word.words()
-  })
-
-  beforeEach(() => {
     sut = render(
       <SignUp validation={validationStub} addAccount={addAccountSpy} />
     )
@@ -114,5 +111,18 @@ describe('SignUp Components', () => {
     await simulateValidSubmit(sut, name, email, password)
 
     expect(addAccountSpy.params).toEqual({ name, email, password, passwordConfirmation: password })
+  })
+
+  it('should call AddAccount only once', async () => {
+    validationStub.errorMessage = null
+    await simulateValidSubmit(sut)
+
+    expect(addAccountSpy.callsCount).toBe(1)
+  })
+
+  it('should not call AddAccount if form is invalid', async () => {
+    await simulateValidSubmit(sut)
+
+    expect(addAccountSpy.callsCount).toBe(0)
   })
 })

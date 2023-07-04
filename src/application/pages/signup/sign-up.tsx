@@ -36,22 +36,28 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
+    if (state.isLoading || state.emailError || state.nameError || state.passwordError || state.passwordConfirmationError) return
     setState({ ...state, isLoading: true })
 
-    await addAccount.add({ name: state.name, email: state.email, password: state.password, passwordConfirmation: state.password })
+    await addAccount.add({
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      passwordConfirmation: state.passwordConfirmation
+    })
   }
 
   return (
     <div className={Styles.signup}>
       <LoginHeader />
       <Context.Provider value={{ state, setState }}>
-        <form data-testid="form" className={Styles.form} onSubmit={handleSubmit} >
+        <form data-testid='form' className={Styles.form} onSubmit={handleSubmit} >
           <h2>Login</h2>
           <Input type='text' name='name' placeholder='Digite seu nome' />
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
           <Input type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
-          <button data-testid="submit" disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError} className={Styles.submit} type='submit'>Entrar</button>
+          <button data-testid='submit' disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError} className={Styles.submit} type='submit'>Entrar</button>
           <span className={Styles.link}>Voltar para Login</span>
           <FormStatus />
         </form>
