@@ -14,6 +14,7 @@ describe('RemoteAddAccount', () => {
   AddAccountParams.Input,
   AccountModel
   >;
+  let httpResult: AccountModel;
   let addAccountParams: AddAccountParams.Input;
 
   beforeAll(() => {
@@ -76,5 +77,16 @@ describe('RemoteAddAccount', () => {
     const promise = sut.add(addAccountParams);
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  it('Should return an AccountModel if HttpPostClient returns 200', async () => {
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCodeParams.OutPut.ok,
+      body: httpResult,
+    };
+
+    const account = await sut.add(addAccountParams);
+
+    expect(account).toEqual(httpResult);
   });
 });
