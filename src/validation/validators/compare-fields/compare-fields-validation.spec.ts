@@ -5,21 +5,29 @@ import { CompareFieldsValidation } from './compare-fields-validation';
 describe('CompareFieldsValidation', () => {
   let sut: CompareFieldsValidation;
   let field: string;
-  let valueToCompare: string;
+  let fieldToCompare: string;
 
   beforeEach(() => {
     field = faker.database.column();
-    valueToCompare = faker.word.words();
-    sut = new CompareFieldsValidation(field, valueToCompare);
+    fieldToCompare = faker.word.words();
+    sut = new CompareFieldsValidation(field, fieldToCompare);
   });
 
   it('should return error if field is empty', () => {
-    const error = sut.validate(faker.word.words());
+    const error = sut.validate({
+      [field]: faker.word.words(),
+      [fieldToCompare]: faker.word.words(),
+    });
     expect(error).toEqual(new InvalidFieldError(field));
   });
 
   it('should return falsy if field is not empty', () => {
-    const error = sut.validate(valueToCompare);
+    const value = faker.word.words();
+
+    const error = sut.validate({
+      [field]: value,
+      [fieldToCompare]: value,
+    });
     expect(error).toBeFalsy();
   });
 });

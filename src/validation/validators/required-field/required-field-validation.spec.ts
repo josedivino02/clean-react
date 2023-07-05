@@ -1,21 +1,26 @@
 import { RequiredFieldError } from '@/validation/errors';
-import { RequiredFieldValidation } from './required-field-validation';
 import { faker } from '@faker-js/faker';
+import { RequiredFieldValidation } from './required-field-validation';
 
 describe('RequiredFieldValidation', () => {
   let sut: RequiredFieldValidation;
+  let field: string;
+
+  beforeAll(() => {
+    field = faker.database.column();
+  });
 
   beforeEach(() => {
-    sut = new RequiredFieldValidation(faker.database.column());
+    sut = new RequiredFieldValidation(field);
   });
 
   it('should return error if field is empty', () => {
-    const error = sut.validate('');
+    const error = sut.validate({ [field]: '' });
     expect(error).toEqual(new RequiredFieldError());
   });
 
   it('should return falsy if field is not empty', () => {
-    const error = sut.validate(faker.word.words());
+    const error = sut.validate({ [field]: faker.word.words() });
     expect(error).toBeFalsy();
   });
 });

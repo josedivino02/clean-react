@@ -1,31 +1,28 @@
-import { EmailValidation } from './email-validation';
 import { InvalidFieldError } from '@/validation/errors';
 import { faker } from '@faker-js/faker';
+import { EmailValidation } from './email-validation';
 
 describe('EmailValidation', () => {
-  let fakerField: string;
   let sut: EmailValidation;
-
-  beforeAll(() => {
-    fakerField = faker.database.column();
-  });
+  let field: string;
 
   beforeEach(() => {
-    sut = new EmailValidation(fakerField);
+    field = faker.database.column();
+    sut = new EmailValidation(field);
   });
 
   it('should return error if email is invalid', () => {
-    const error = sut.validate(faker.word.words());
-    expect(error).toEqual(new InvalidFieldError(fakerField));
+    const error = sut.validate({ [field]: faker.word.words() });
+    expect(error).toEqual(new InvalidFieldError(field));
   });
 
   it('should return falsy if email is valid', () => {
-    const error = sut.validate(faker.internet.email());
+    const error = sut.validate({ [field]: faker.internet.email() });
     expect(error).toBeFalsy();
   });
 
   it('should return falsy if email is empty', () => {
-    const error = sut.validate('');
+    const error = sut.validate({ [field]: '' });
     expect(error).toBeFalsy();
   });
 });

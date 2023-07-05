@@ -1,6 +1,6 @@
-import { ValidationComposite } from './validation-composite';
 import { FieldValidationSpy } from '@/validation/test';
 import { faker } from '@faker-js/faker';
+import { ValidationComposite } from './validation-composite';
 
 describe('ValidationComposite', () => {
   let fieldValidationSpy: FieldValidationSpy;
@@ -27,13 +27,13 @@ describe('ValidationComposite', () => {
     const errorMessage = faker.word.words();
     fieldValidationSpy.error = new Error(errorMessage);
     fieldValidationSpyTwo.error = new Error(faker.word.words());
-    const error = sut.validate(fieldName, faker.word.sample());
+    const error = sut.validate(fieldName, { [fieldName]: faker.word.sample() });
 
     expect(error).toBe(errorMessage);
   });
 
   it('should return falsy if there is no error', () => {
-    const error = sut.validate(fieldName, faker.word.sample());
+    const error = sut.validate(fieldName, { [fieldName]: faker.word.sample() });
 
     expect(error).toBeFalsy();
   });
