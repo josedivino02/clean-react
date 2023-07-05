@@ -1,4 +1,4 @@
-import { Footer, FormStatus, Input, LoginHeader } from '@/application/components';
+import { Footer, FormStatus, Input, LoginHeader, SubmitButton } from '@/application/components';
 import Context from '@/application/contexts/form/form-context';
 import { type Validation } from '@/application/contracts/validation';
 import { type Authentication, type SaveAccessToken } from '@/domain/usecases';
@@ -17,6 +17,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: true,
     email: '',
     password: '',
     emailError: '',
@@ -25,17 +26,21 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
   })
 
   useEffect(() => {
+    const emailError = validation.validate('email', state.email)
+    const passwordError = validation.validate('password', state.password)
+
     setState({
       ...state,
-      emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password)
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError
     })
   }, [state.email, state.password])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      if (state.isLoading || state.emailError || state.passwordError) return
+      if (state.isLoading || state.isFormInvalid) return
       setState({ ...state, isLoading: true })
       const account = await authentication.auth({
         email: state.email,
@@ -62,7 +67,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <h2>Login</h2>
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
-          <button data-testid='submit' disabled={!!state.emailError || !!state.passwordError} className={Styles.submit} type='submit'>Entrar</button>
+          <SubmitButton text='Entrar' />
           <Link data-testid="signup" to='/signup' className={Styles.link}>Criar conta</Link>
           <FormStatus />
         </form>
