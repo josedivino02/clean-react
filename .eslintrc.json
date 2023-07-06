@@ -5,10 +5,17 @@
     }
   },
   "parserOptions": {
-    "project": "tsconfig.json"
+    "project": "tsconfig-eslint.json"
   },
-  "extends": ["standard-with-typescript", "plugin:react/recommended"],
-  "plugins": ["react"],
+  "env": {
+    "cypress/globals": true
+  },
+  "extends": [
+    "standard-with-typescript",
+    "plugin:react/recommended",
+    "plugin:cypress/recommended"
+  ],
+  "plugins": ["react", "cypress"],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
