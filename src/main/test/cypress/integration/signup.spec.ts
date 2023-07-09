@@ -77,4 +77,11 @@ describe('SignUp', () => {
     FormHelper.testMainError('something wrong happened. Try again soon');
     FormHelper.testUrl('signup');
   });
+
+  it('Should present UnexpectedError if invalid data is returned', () => {
+    Http.mockInvalidData();
+    simulateValidSubmit();
+    FormHelper.testMainError('something wrong happened. Try again soon');
+    FormHelper.testUrl('signup');
+  });
 });
