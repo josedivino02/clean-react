@@ -1,4 +1,5 @@
 import { SetStorageMock } from '@/data/test';
+import { UnexpectedError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { LocalSaveAccessToken } from './local-save-access-token';
 
@@ -28,5 +29,11 @@ describe('LocalSaveAccessToken', () => {
     const promise = sut.save(accessToken);
 
     await expect(promise).rejects.toThrow(new Error());
+  });
+
+  it('Should throw if accessToken is falsy', async () => {
+    const promise = sut.save(undefined);
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
