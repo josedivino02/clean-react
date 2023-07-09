@@ -15,18 +15,8 @@ body {
 input[type='text'],
 input[type='password'],
 input[type='email'] {
-  border: 1px solid $primaryLight;
-  line-height: 40px;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  padding: 0px 40px 0px 8px;
-
-  &:focus {
-    outline-color: $primaryLight;
-  }
+  border: none;
+  outline: none;
 }
 
 button {
@@ -34,7 +24,7 @@ button {
   color: $white;
   font-size: 16px;
   border: none;
-  line-height: 60px;
+  line-height: 50px;
   border-radius: 8px;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
