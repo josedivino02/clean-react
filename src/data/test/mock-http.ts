@@ -1,5 +1,7 @@
 import {
   HttpStatusCodeParams,
+  type HttpGetClient,
+  type HttpGetClientParams,
   type HttpPostClient,
   type HttpPostClientParams,
   type HttpResponse,
@@ -17,5 +19,12 @@ export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
     this.body = params.body;
 
     return await Promise.resolve(this.response);
+  }
+}
+
+export class HttpGetClientSpy implements HttpGetClient {
+  url: string;
+  async get(params: HttpGetClientParams.Input): Promise<void> {
+    this.url = params.url;
   }
 }
