@@ -26,13 +26,13 @@ describe('AxiosHttpClient', () => {
     sut = new AxiosHttpClient();
   });
 
-  it('Should call axios with correct values', async () => {
+  it('Should call axios.post with correct values', async () => {
     await sut.post({ url, body });
 
     expect(mockedAxios.post).toHaveBeenCalledWith(url, body);
   });
 
-  it('Should call axios with correct statusCode and body', async () => {
+  it('Should return correct response on axios.post', async () => {
     const httpResponse = await sut.post({ url, body });
 
     expect(httpResponse).toEqual({
@@ -41,7 +41,7 @@ describe('AxiosHttpClient', () => {
     });
   });
 
-  it('Should call axios with correct statusCode and body on failure', async () => {
+  it('Should return correct error on axios.post', async () => {
     const httpResponse = await sut.post({ url, body });
 
     mockedAxios.post.mockRejectedValueOnce({
