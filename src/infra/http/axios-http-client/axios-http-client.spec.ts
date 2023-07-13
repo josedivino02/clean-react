@@ -43,6 +43,16 @@ describe('AxiosHttpClient', () => {
       });
     });
 
+    it('Should return correct response on axios.post', async () => {
+      const httpResponse = await sut.post({ url });
+      const axiosResponse = await mockedAxios.post.mock.results[0].value;
+
+      expect(httpResponse).toEqual({
+        statusCode: axiosResponse.status,
+        body: axiosResponse.data,
+      });
+    });
+
     it('Should return correct error on axios.post', async () => {
       const httpResponse = await sut.post({ url, body });
 
