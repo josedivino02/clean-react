@@ -20,40 +20,51 @@ describe('AxiosHttpClient', () => {
       status: faker.number.int(),
     };
     mockedAxios.post.mockResolvedValue(mockedAxiosResult);
+    mockedAxios.get.mockResolvedValue(mockedAxiosResult);
   });
 
   beforeEach(() => {
     sut = new AxiosHttpClient();
   });
 
-  it('Should call axios.post with correct values', async () => {
-    await sut.post({ url, body });
+  describe('POST', () => {
+    it('Should call axios.post with correct values', async () => {
+      await sut.post({ url, body });
 
-    expect(mockedAxios.post).toHaveBeenCalledWith(url, body);
-  });
+      expect(mockedAxios.post).toHaveBeenCalledWith(url, body);
+    });
 
-  it('Should return correct response on axios.post', async () => {
-    const httpResponse = await sut.post({ url, body });
+    it('Should return correct response on axios.post', async () => {
+      const httpResponse = await sut.post({ url, body });
 
-    expect(httpResponse).toEqual({
-      statusCode: mockedAxiosResult.status,
-      body: mockedAxiosResult.data,
+      expect(httpResponse).toEqual({
+        statusCode: mockedAxiosResult.status,
+        body: mockedAxiosResult.data,
+      });
+    });
+
+    it('Should return correct error on axios.post', async () => {
+      const httpResponse = await sut.post({ url, body });
+
+      mockedAxios.post.mockRejectedValueOnce({
+        response: {
+          data: faker.helpers.arrayElement(['any_data']),
+          status: faker.number.int(),
+        },
+      });
+
+      expect(httpResponse).toEqual({
+        statusCode: mockedAxiosResult.status,
+        body: mockedAxiosResult.data,
+      });
     });
   });
 
-  it('Should return correct error on axios.post', async () => {
-    const httpResponse = await sut.post({ url, body });
+  describe('GET', () => {
+    it('Should call axios.get with correct values', async () => {
+      await sut.get({ url });
 
-    mockedAxios.post.mockRejectedValueOnce({
-      response: {
-        data: faker.helpers.arrayElement(['any_data']),
-        status: faker.number.int(),
-      },
-    });
-
-    expect(httpResponse).toEqual({
-      statusCode: mockedAxiosResult.status,
-      body: mockedAxiosResult.data,
+      expect(mockedAxios.get).toHaveBeenCalledWith(url);
     });
   });
 });
