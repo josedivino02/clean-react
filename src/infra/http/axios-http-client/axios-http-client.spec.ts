@@ -19,8 +19,8 @@ describe('AxiosHttpClient', () => {
       data: faker.helpers.arrayElement(['any_data']),
       status: faker.number.int(),
     };
-    mockedAxios.post.mockResolvedValue(mockedAxiosResult);
-    mockedAxios.get.mockResolvedValue(mockedAxiosResult);
+    mockedAxios.post.mockClear().mockResolvedValue(mockedAxiosResult);
+    mockedAxios.get.mockClear().mockResolvedValue(mockedAxiosResult);
   });
 
   beforeEach(() => {
@@ -65,6 +65,16 @@ describe('AxiosHttpClient', () => {
       await sut.get({ url });
 
       expect(mockedAxios.get).toHaveBeenCalledWith(url);
+    });
+
+    it('Should return correct response on axios.get', async () => {
+      const httpResponse = await sut.get({ url });
+      const axiosResponse = await mockedAxios.get.mock.results[0].value;
+
+      expect(httpResponse).toEqual({
+        statusCode: axiosResponse.status,
+        body: axiosResponse.data,
+      });
     });
   });
 });
