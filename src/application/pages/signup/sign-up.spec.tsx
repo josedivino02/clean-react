@@ -1,5 +1,5 @@
 import { SignUp } from '@/application/pages';
-import { AddAccountSpy, Helper, SaveAccessTokenMock, ValidationStub } from '@/application/test';
+import { AddAccountSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/application/test';
 import { EmailInUseError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
@@ -24,17 +24,17 @@ describe('SignUp Components', () => {
   let validationStub: ValidationStub
   let addAccountSpy: AddAccountSpy
   let history: MemoryHistory
-  let saveAccessTokenMock: SaveAccessTokenMock
+  let updateCurrentAccountMock: UpdateCurrentAccountMock
 
   beforeEach(() => {
     validationStub = new ValidationStub()
     addAccountSpy = new AddAccountSpy()
-    saveAccessTokenMock = new SaveAccessTokenMock()
+    updateCurrentAccountMock = new UpdateCurrentAccountMock()
     validationStub.errorMessage = faker.word.words()
     history = createMemoryHistory({ initialEntries: ['/signup'] })
     sut = render(
       <Router location={''} navigator={history} >
-        <SignUp validation={validationStub} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
+        <SignUp validation={validationStub} addAccount={addAccountSpy} updateCurrentAccount={updateCurrentAccountMock} />
       </Router >
     )
   })
@@ -147,12 +147,12 @@ describe('SignUp Components', () => {
     Helper.testChildCount(sut, 'error-wrap', 1)
   })
 
-  it('should call SaveAccessToken on success', async () => {
+  it('should call UpdateCurrentAccount on success', async () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit(sut)
 
-    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+    expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account)
     expect(history.location.pathname).toBe('/')
   })
 

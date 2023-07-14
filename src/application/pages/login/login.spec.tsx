@@ -1,5 +1,5 @@
 import { Login } from '@/application/pages';
-import { AuthenticationSpy, Helper, SaveAccessTokenMock, ValidationStub } from '@/application/test';
+import { AuthenticationSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
@@ -22,12 +22,12 @@ describe('Login Components', () => {
   let validationStub: ValidationStub
   let authenticationSpy: AuthenticationSpy
   let history: MemoryHistory
-  let saveAccessTokenMock: SaveAccessTokenMock
+  let updateCurrentAccountMock: UpdateCurrentAccountMock
 
   beforeEach(() => {
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
-    saveAccessTokenMock = new SaveAccessTokenMock()
+    updateCurrentAccountMock = new UpdateCurrentAccountMock()
     history = createMemoryHistory({ initialEntries: ['/login'] })
     validationStub.errorMessage = faker.word.words()
     sut = render(
@@ -35,7 +35,7 @@ describe('Login Components', () => {
         <Login
           validation={validationStub}
           authentication={authenticationSpy}
-          saveAccessToken={saveAccessTokenMock} />
+          updateCurrentAccount={updateCurrentAccountMock} />
       </Router>
     )
   })
@@ -131,7 +131,7 @@ describe('Login Components', () => {
 
     await simulateValidSubmit(sut)
 
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+    expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account)
     expect(history.location.pathname).toBe('/')
   })
 

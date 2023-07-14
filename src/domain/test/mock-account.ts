@@ -9,4 +9,5 @@ export const mockAuthentication = (): AuthenticationParams.Input => ({
 
 export const mockAccountModel = (): AccountModel => ({
   accessToken: faker.string.uuid(),
+  name: faker.person.fullName(),
 });
