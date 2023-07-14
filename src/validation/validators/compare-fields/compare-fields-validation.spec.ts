@@ -15,8 +15,8 @@ describe('CompareFieldsValidation', () => {
 
   it('should return error if field is empty', () => {
     const error = sut.validate({
-      [field]: faker.word.words(),
-      [fieldToCompare]: faker.word.words(),
+      [field]: faker.word.words(3),
+      [fieldToCompare]: faker.word.words(4),
     });
     expect(error).toEqual(new InvalidFieldError(field));
   });
