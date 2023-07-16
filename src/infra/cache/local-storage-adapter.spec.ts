@@ -7,26 +7,33 @@ describe('LocalStorageAdapter', () => {
   let key: string;
   let value: { accessToken: string; name: string };
 
-  beforeAll(() => {
+  beforeEach(() => {
     key = faker.database.column();
     value = {
       accessToken: faker.string.uuid(),
       name: faker.person.fullName(),
     };
-  });
-
-  beforeEach(() => {
     sut = new LocalStorageAdapter();
 
     localStorage.clear();
   });
 
-  it('Should call localStorage with correct values', () => {
+  it('Should call localStorage.setItem with correct values', () => {
     sut.set(key, value);
 
     expect(localStorage.setItem).toHaveBeenCalledWith(
       key,
       JSON.stringify(value),
     );
+  });
+
+  it('Should call localStorage.getItem with correct value', () => {
+    const getItemSpy = jest
+      .spyOn(localStorage, 'getItem')
+      .mockReturnValueOnce(JSON.stringify(value));
+    const obj = sut.get(key);
+
+    expect(obj).toEqual(value);
+    expect(getItemSpy).toHaveBeenCalledWith(key);
   });
 });
