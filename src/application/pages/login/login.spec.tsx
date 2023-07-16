@@ -1,6 +1,7 @@
 import { ApiContext } from '@/application/contexts';
 import { Login } from '@/application/pages';
 import { AuthenticationSpy, Helper, ValidationStub } from '@/application/test';
+import { InvalidCredentialsError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory, type MemoryHistory } from 'history';
@@ -42,8 +43,8 @@ describe('Login Components', () => {
   })
 
   it('Should start with initial state', () => {
-    Helper.testChildCount('error-wrap', 0)
-    Helper.testButtonIsDisabled('submit', true)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('submit')).toBeDisabled()
 
     Helper.testStatusForField('email', validationStub.errorMessage)
     Helper.testStatusForField('password', validationStub.errorMessage)
@@ -78,14 +79,14 @@ describe('Login Components', () => {
 
     Helper.populateField('email')
     Helper.populateField('password')
-    Helper.testButtonIsDisabled('submit', false)
+    expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
   it('should show spinner on submit', async () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit()
-    Helper.testElementExist('spinner')
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 
   it('should call Authentication with correct values', async () => {
@@ -111,6 +112,18 @@ describe('Login Components', () => {
     await simulateValidSubmit()
 
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  it('should present error if Authentication fails', async () => {
+    validationStub.errorMessage = null
+
+    const error = new InvalidCredentialsError()
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
+
+    await simulateValidSubmit()
+
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
   it('should call SaveAccessToken on success', async () => {

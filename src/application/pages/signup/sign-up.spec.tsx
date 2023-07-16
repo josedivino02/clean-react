@@ -42,8 +42,8 @@ describe('SignUp Components', () => {
   })
 
   it('Should start with initial state', () => {
-    Helper.testChildCount('error-wrap', 0)
-    Helper.testButtonIsDisabled('submit', true)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('submit')).toBeDisabled()
 
     Helper.testStatusForField('name', validationStub.errorMessage)
     Helper.testStatusForField('email', validationStub.errorMessage)
@@ -101,14 +101,14 @@ describe('SignUp Components', () => {
     Helper.populateField('email')
     Helper.populateField('password')
     Helper.populateField('passwordConfirmation')
-    Helper.testButtonIsDisabled('submit', false)
+    expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
   it('should show spinner on submit', async () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit()
-    Helper.testElementExist('spinner')
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 
   it('should call AddAccount with correct values', async () => {
@@ -143,8 +143,8 @@ describe('SignUp Components', () => {
 
     await simulateValidSubmit()
 
-    Helper.testElementText('main-error', error.message)
-    Helper.testChildCount('error-wrap', 1)
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
   it('should call UpdateCurrentAccount on success', async () => {
