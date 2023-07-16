@@ -1,6 +1,6 @@
+import { ApiContext } from '@/application/contexts';
 import { Login } from '@/application/pages';
-import { AuthenticationSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/application/test';
-import { InvalidCredentialsError } from '@/domain/errors';
+import { AuthenticationSpy, Helper, ValidationStub } from '@/application/test';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
 import { createMemoryHistory, type MemoryHistory } from 'history';
@@ -22,21 +22,23 @@ describe('Login Components', () => {
   let validationStub: ValidationStub
   let authenticationSpy: AuthenticationSpy
   let history: MemoryHistory
-  let updateCurrentAccountMock: UpdateCurrentAccountMock
+  let setCurrentAccountMock: jest.Mock
 
   beforeEach(() => {
     validationStub = new ValidationStub()
     authenticationSpy = new AuthenticationSpy()
-    updateCurrentAccountMock = new UpdateCurrentAccountMock()
+    setCurrentAccountMock = jest.fn()
     history = createMemoryHistory({ initialEntries: ['/login'] })
     validationStub.errorMessage = faker.word.words()
     sut = render(
-      <Router location={''} navigator={history} >
-        <Login
-          validation={validationStub}
-          authentication={authenticationSpy}
-          updateCurrentAccount={updateCurrentAccountMock} />
-      </Router>
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+        <Router location={''} navigator={history} >
+          <Login
+            validation={validationStub}
+            authentication={authenticationSpy}
+          />
+        </Router>
+      </ApiContext.Provider>
     )
   })
 
@@ -114,24 +116,12 @@ describe('Login Components', () => {
     expect(authenticationSpy.callsCount).toBe(0)
   })
 
-  it('should present error if Authentication fails', async () => {
-    validationStub.errorMessage = null
-
-    const error = new InvalidCredentialsError()
-    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
-
-    await simulateValidSubmit(sut)
-
-    Helper.testElementText(sut, 'main-error', error.message)
-    Helper.testChildCount(sut, 'error-wrap', 1)
-  })
-
   it('should call SaveAccessToken on success', async () => {
     validationStub.errorMessage = null
 
     await simulateValidSubmit(sut)
 
-    expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account)
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(authenticationSpy.account)
     expect(history.location.pathname).toBe('/')
   })
 

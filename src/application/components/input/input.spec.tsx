@@ -1,4 +1,4 @@
-import Context from '@/application/contexts/form/form-context';
+import { FormContext } from '@/application/contexts';
 import { faker } from '@faker-js/faker';
 import { fireEvent, render, type RenderResult } from '@testing-library/react';
 import React from 'react';
@@ -15,9 +15,9 @@ describe('Input Component', () => {
 
   beforeEach(() => {
     sut = render(
-      <Context.Provider value={{ state: {} }}>
+      <FormContext.Provider value={{ state: {} }}>
         <Input name={fieldName} />
-      </Context.Provider >
+      </FormContext.Provider >
     )
     input = sut.getByTestId(fieldName) as HTMLInputElement
   })

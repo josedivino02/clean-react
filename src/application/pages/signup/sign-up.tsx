@@ -1,19 +1,20 @@
 import { Footer, FormStatus, Input, LoginHeader, SubmitButton } from '@/application/components';
-import Context from '@/application/contexts/form/form-context';
+import { ApiContext, FormContext } from '@/application/contexts';
 import { type Validation } from '@/application/contracts/validation';
-import { type AddAccount, type UpdateCurrentAccount } from '@/domain/usecases';
-import React, { useEffect, useState } from 'react';
+import { type AddAccount } from '@/domain/usecases';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Styles from './sign-up-styles.scss';
 
 type Props = {
   validation: Validation,
   addAccount: AddAccount,
-  updateCurrentAccount: UpdateCurrentAccount
 }
 
-const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const navigate = useNavigate();
+
+  const { setCurrentAccount } = useContext(ApiContext)
 
   const [state, setState] = useState({
     isLoading: false,
@@ -61,7 +62,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
         passwordConfirmation: state.passwordConfirmation
       })
 
-      await updateCurrentAccount.save(account)
+      setCurrentAccount(account)
 
       navigate('/')
     } catch (error) {
@@ -76,7 +77,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
   return (
     <div className={Styles.signupWrap}>
       <LoginHeader />
-      <Context.Provider value={{ state, setState }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form data-testid='form' className={Styles.form} onSubmit={handleSubmit} >
           <h2>CRIAR CONTA</h2>
           <Input type='text' name='name' placeholder='Digite seu nome' />
@@ -87,7 +88,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
           <Link data-testid="login" to='/login' className={Styles.link}>Voltar para Login</Link>
           <FormStatus />
         </form>
-      </Context.Provider>
+      </FormContext.Provider>
       <Footer />
     </div>
   )

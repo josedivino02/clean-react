@@ -1,5 +1,6 @@
+import ApiContext from '@/application/contexts/api/api-context';
 import { SignUp } from '@/application/pages';
-import { AddAccountSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/application/test';
+import { AddAccountSpy, Helper, ValidationStub } from '@/application/test';
 import { EmailInUseError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { cleanup, fireEvent, render, waitFor, type RenderResult } from '@testing-library/react';
@@ -24,18 +25,20 @@ describe('SignUp Components', () => {
   let validationStub: ValidationStub
   let addAccountSpy: AddAccountSpy
   let history: MemoryHistory
-  let updateCurrentAccountMock: UpdateCurrentAccountMock
+  let setCurrentAccountMock: jest.Mock
 
   beforeEach(() => {
     validationStub = new ValidationStub()
     addAccountSpy = new AddAccountSpy()
-    updateCurrentAccountMock = new UpdateCurrentAccountMock()
+    setCurrentAccountMock = jest.fn()
     validationStub.errorMessage = faker.word.words()
     history = createMemoryHistory({ initialEntries: ['/signup'] })
     sut = render(
-      <Router location={''} navigator={history} >
-        <SignUp validation={validationStub} addAccount={addAccountSpy} updateCurrentAccount={updateCurrentAccountMock} />
-      </Router >
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+        <Router location={''} navigator={history} >
+          <SignUp validation={validationStub} addAccount={addAccountSpy} />
+        </Router >
+      </ApiContext.Provider>
     )
   })
 
@@ -152,7 +155,7 @@ describe('SignUp Components', () => {
 
     await simulateValidSubmit(sut)
 
-    expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account)
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(addAccountSpy.account)
     expect(history.location.pathname).toBe('/')
   })
 

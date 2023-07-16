@@ -5,11 +5,14 @@ import { LocalStorageAdapter } from './local-storage-adapter';
 describe('LocalStorageAdapter', () => {
   let sut: LocalStorageAdapter;
   let key: string;
-  let value: string;
+  let value: { accessToken: string; name: string };
 
   beforeAll(() => {
     key = faker.database.column();
-    value = faker.word.words();
+    value = {
+      accessToken: faker.string.uuid(),
+      name: faker.person.fullName(),
+    };
   });
 
   beforeEach(() => {
@@ -18,9 +21,12 @@ describe('LocalStorageAdapter', () => {
     localStorage.clear();
   });
 
-  it('Should call localStorage with correct values', async () => {
-    await sut.set(key, value);
+  it('Should call localStorage with correct values', () => {
+    sut.set(key, value);
 
-    expect(localStorage.setItem).toHaveBeenCalledWith(key, value);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      key,
+      JSON.stringify(value),
+    );
   });
 });
