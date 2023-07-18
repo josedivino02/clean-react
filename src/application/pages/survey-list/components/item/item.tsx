@@ -1,7 +1,7 @@
 import { Icon, IconName } from '@/application/components'
 import { type SurveyModel } from '@/domain/models'
 import React from 'react'
-import Styles from './survey-item-styles.scss'
+import Styles from './item-styles.scss'
 
 type Props = {
   survey: SurveyModel
