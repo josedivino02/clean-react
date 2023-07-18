@@ -45,7 +45,6 @@ describe('SurveyList Component', () => {
   })
 
   // it('Should render error on failure', async () => {
-  //   const loadSurveyListSpy = new LoadSurveyListSpy()
   //   const error = new UnexpectedError()
   //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error)
 
@@ -53,5 +52,14 @@ describe('SurveyList Component', () => {
 
   //   expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument()
   //   expect(screen.getByTestId('error')).toHaveTextContent(error.message)
+  // })
+
+  // it('Should call LoadSurveyList on reload', async () => {
+  //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError())
+
+  //   await waitFor(() => screen.getByRole('heading'))
+  //   fireEvent.click(screen.getByTestId('reload'))
+  //   expect(loadSurveyListSpy.callsCount).toBe(1)
+  //   await waitFor(() => screen.getByRole('heading'))
   // })
 })
