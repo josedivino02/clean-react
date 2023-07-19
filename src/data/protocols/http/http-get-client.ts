@@ -3,6 +3,7 @@ import { type HttpResponse } from './http-response';
 export namespace HttpGetClientParams {
   export type Input = {
     url: string;
+    headers?: any;
   };
 }
 

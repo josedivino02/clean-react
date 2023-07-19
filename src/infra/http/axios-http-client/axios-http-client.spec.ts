@@ -10,11 +10,13 @@ describe('AxiosHttpClient', () => {
   let body: string;
   let sut: AxiosHttpClient;
   let mockedAxiosResult: { data: string; status: number };
+  let headers: string;
 
   beforeAll(() => {
     mockedAxios = axios as jest.Mocked<typeof axios>;
     url = faker.internet.url();
     body = faker.helpers.arrayElement(['any_data']);
+    headers = faker.helpers.arrayElement(['any_data']);
     mockedAxiosResult = {
       data: faker.helpers.arrayElement(['any_data']),
       status: faker.number.int(),
@@ -72,9 +74,9 @@ describe('AxiosHttpClient', () => {
 
   describe('GET', () => {
     it('Should call axios.get with correct values', async () => {
-      await sut.get({ url });
+      await sut.get({ url, headers });
 
-      expect(mockedAxios.get).toHaveBeenCalledWith(url);
+      expect(mockedAxios.get).toHaveBeenCalledWith(url, { headers });
     });
 
     it('Should return correct response on axios.get', async () => {
