@@ -13,12 +13,14 @@ export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
     private readonly httpPostClient: HttpPostClient<
-    AuthenticationParams.Input,
-    AccountModel
+      AuthenticationParams.Input,
+      AccountModel
     >,
   ) {}
 
-  async auth(params: AuthenticationParams.Input): Promise<AccountModel> {
+  async auth(
+    params: AuthenticationParams.Input,
+  ): Promise<RemoteAuthentication.Output> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params,
@@ -33,4 +35,8 @@ export class RemoteAuthentication implements Authentication {
         throw new UnexpectedError();
     }
   }
+}
+
+export namespace RemoteAuthentication {
+  export type Output = AccountModel;
 }

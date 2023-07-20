@@ -1,10 +1,10 @@
 import { Icon, IconName } from '@/application/components'
-import { type SurveyModel } from '@/domain/models'
+import { type LoadSurveyListParams } from '@/domain/usecases'
 import React from 'react'
 import Styles from './item-styles.scss'
 
 type Props = {
-  survey: SurveyModel
+  survey: LoadSurveyListParams.Output
 }
 
 const SurveyItem: React.FC<Props> = ({ survey }: Props) => {

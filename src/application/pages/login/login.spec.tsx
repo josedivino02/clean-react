@@ -1,7 +1,9 @@
 import { ApiContext } from '@/application/contexts';
 import { Login } from '@/application/pages';
-import { AuthenticationSpy, Helper, ValidationStub } from '@/application/test';
+import { Helper, ValidationStub } from '@/application/test';
 import { InvalidCredentialsError } from '@/domain/errors';
+import { AuthenticationSpy } from '@/domain/test';
+import { type AuthenticationParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory, type MemoryHistory } from 'history';
@@ -22,7 +24,7 @@ describe('Login Components', () => {
   let validationStub: ValidationStub
   let authenticationSpy: AuthenticationSpy
   let history: MemoryHistory
-  let setCurrentAccountMock: jest.Mock
+  let setCurrentAccountMock: (account: AuthenticationParams.Output) => void
 
   beforeEach(() => {
     validationStub = new ValidationStub()

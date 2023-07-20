@@ -7,8 +7,10 @@ export namespace AddAccountParams {
     password: string;
     passwordConfirmation: string;
   };
+
+  export type Output = AccountModel;
 }
 
 export interface AddAccount {
-  add: (params: AddAccountParams.Input) => Promise<AccountModel>;
+  add: (params: AddAccountParams.Input) => Promise<AddAccountParams.Output>;
 }

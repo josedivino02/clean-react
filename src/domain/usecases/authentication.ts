@@ -5,8 +5,12 @@ export namespace AuthenticationParams {
     email: string;
     password: string;
   };
+
+  export type Output = AccountModel;
 }
 
 export interface Authentication {
-  auth: (params: AuthenticationParams.Input) => Promise<AccountModel>;
+  auth: (
+    params: AuthenticationParams.Input,
+  ) => Promise<AuthenticationParams.Output>;
 }

@@ -1,19 +1,18 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
 import { HttpGetClientSpy } from '@/data/test';
 import { UnexpectedError } from '@/domain/errors';
-import { type SurveyModel } from '@/domain/models';
 import { mockSurveyListModel } from '@/domain/test';
 import { faker } from '@faker-js/faker';
 import { RemoteLoadSurveyList } from './remote-load-survey-list';
 
 describe('RemoteLoadSurveyList', () => {
   let url: string;
-  let httpGetClientSpy: HttpGetClientSpy<SurveyModel[]>;
+  let httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyList.Output[]>;
   let sut: RemoteLoadSurveyList;
 
   beforeEach(() => {
     url = faker.internet.url();
-    httpGetClientSpy = new HttpGetClientSpy<SurveyModel[]>();
+    httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyList.Output[]>();
     sut = new RemoteLoadSurveyList(url, httpGetClientSpy);
   });
 

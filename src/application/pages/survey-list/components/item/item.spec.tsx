@@ -1,12 +1,12 @@
 import { IconName } from '@/application/components';
 import { SurveyItem } from '@/application/pages/survey-list/components';
-import { type SurveyModel } from '@/domain/models';
 import { mockSurveyModel } from '@/domain/test';
+import { type LoadSurveyListParams } from '@/domain/usecases';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 describe('SurveyItem Component', () => {
-  let surveyModel: SurveyModel
+  let surveyModel: LoadSurveyListParams.Output
 
   beforeEach(() => {
     surveyModel = mockSurveyModel()

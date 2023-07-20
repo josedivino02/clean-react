@@ -3,18 +3,16 @@ import { HttpPostClientSpy } from '@/data/test';
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { type AccountModel } from '@/domain/models';
-import {
-  mockAccountModel,
-  mockAuthentication,
-} from '@/domain/test/mock-account';
+import { mockAuthentication, mockAuthenticationModel } from '@/domain/test';
+
 import { type AuthenticationParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
 
 describe('RemoteAuthentication', () => {
   let sut: RemoteAuthentication;
   let httpPostClientSpy: HttpPostClientSpy<
-  AuthenticationParams.Input,
-  AccountModel
+    AuthenticationParams.Input,
+    RemoteAuthentication.Output
   >;
   let url: string;
   let authenticationParams: AuthenticationParams.Input;
@@ -22,7 +20,7 @@ describe('RemoteAuthentication', () => {
 
   beforeAll(() => {
     url = faker.internet.url();
-    httpResult = mockAccountModel();
+    httpResult = mockAuthenticationModel();
     authenticationParams = mockAuthentication();
   });
 

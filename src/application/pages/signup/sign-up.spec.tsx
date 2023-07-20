@@ -1,7 +1,8 @@
 import ApiContext from '@/application/contexts/api/api-context';
 import { SignUp } from '@/application/pages';
-import { AddAccountSpy, Helper, ValidationStub } from '@/application/test';
+import { Helper, ValidationStub } from '@/application/test';
 import { EmailInUseError } from '@/domain/errors';
+import { AddAccountSpy } from '@/domain/test';
 import { faker } from '@faker-js/faker';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory, type MemoryHistory } from 'history';

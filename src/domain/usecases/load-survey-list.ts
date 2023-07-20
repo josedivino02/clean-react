@@ -1,5 +1,11 @@
-import { type SurveyModel } from '@/domain/models';
-
+export namespace LoadSurveyListParams {
+  export type Output = {
+    id: string;
+    question: string;
+    didAnswer: boolean;
+    date: Date;
+  };
+}
 export interface LoadSurveyList {
-  loadAll: () => Promise<SurveyModel[]>;
+  loadAll: () => Promise<LoadSurveyListParams.Output[]>;
 }

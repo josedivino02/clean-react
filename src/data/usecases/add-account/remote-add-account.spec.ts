@@ -2,7 +2,7 @@ import { HttpStatusCodeParams } from '@/data/protocols/http';
 import { HttpPostClientSpy } from '@/data/test';
 import { EmailInUseError, UnexpectedError } from '@/domain/errors';
 import { type AccountModel } from '@/domain/models';
-import { mockAddAccountParams } from '@/domain/test';
+import { mockAddAccountModel, mockAddAccountParams } from '@/domain/test';
 import { type AddAccountParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
 import { RemoteAddAccount } from './remote-add-account';
@@ -11,13 +11,14 @@ describe('RemoteAddAccount', () => {
   let sut: RemoteAddAccount;
   let url: string;
   let httpPostClientSpy: HttpPostClientSpy<
-  AddAccountParams.Input,
-  AccountModel
+    AddAccountParams.Input,
+    RemoteAddAccount.Output
   >;
   let httpResult: AccountModel;
   let addAccountParams: AddAccountParams.Input;
 
   beforeAll(() => {
+    httpResult = mockAddAccountModel();
     url = faker.internet.url();
     httpPostClientSpy = new HttpPostClientSpy();
     addAccountParams = mockAddAccountParams();

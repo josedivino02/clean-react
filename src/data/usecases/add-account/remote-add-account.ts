@@ -10,12 +10,12 @@ export class RemoteAddAccount implements AddAccount {
   constructor(
     private readonly url: string,
     private readonly httpPostClient: HttpPostClient<
-    AddAccountParams.Input,
-    AccountModel
+      AddAccountParams.Input,
+      RemoteAddAccount.Output
     >,
   ) {}
 
-  async add(params: AddAccountParams.Input): Promise<AccountModel> {
+  async add(params: AddAccountParams.Input): Promise<RemoteAddAccount.Output> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params,
@@ -30,4 +30,8 @@ export class RemoteAddAccount implements AddAccount {
         throw new UnexpectedError();
     }
   }
+}
+
+export namespace RemoteAddAccount {
+  export type Output = AccountModel;
 }
