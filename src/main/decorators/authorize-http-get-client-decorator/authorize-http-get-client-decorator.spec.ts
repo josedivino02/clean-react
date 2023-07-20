@@ -3,12 +3,22 @@ import { AuthorizeHttpGetClientDecorator } from '@/main/decorators';
 import { faker } from '@faker-js/faker';
 
 describe('AuthorizeHttpGetClientDecorator', () => {
-  it('Should call getStorage with correct value', () => {
-    const url = faker.internet.url();
-    const headers = faker.helpers.arrayElement(['any_data']);
-    const getStorageSpy = new GetStorageSpy();
-    const sut = new AuthorizeHttpGetClientDecorator(getStorageSpy);
+  let url: string;
+  let headers: string;
+  let getStorageSpy: GetStorageSpy;
+  let sut: AuthorizeHttpGetClientDecorator;
 
+  beforeAll(() => {
+    url = faker.internet.url();
+    headers = faker.helpers.arrayElement(['any_data']);
+    getStorageSpy = new GetStorageSpy();
+  });
+
+  beforeEach(() => {
+    sut = new AuthorizeHttpGetClientDecorator(getStorageSpy);
+  });
+
+  it('Should call getStorage with correct value', () => {
     sut.get({ url, headers });
 
     expect(getStorageSpy.key).toBe('account');
