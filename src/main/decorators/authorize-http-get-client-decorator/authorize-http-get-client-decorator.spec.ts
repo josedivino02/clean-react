@@ -1,4 +1,5 @@
-import { GetStorageSpy } from '@/data/test';
+import { type HttpGetClientParams } from '@/data/protocols/http';
+import { GetStorageSpy, HttpGetClientSpy } from '@/data/test';
 import { AuthorizeHttpGetClientDecorator } from '@/main/decorators';
 import { faker } from '@faker-js/faker';
 
@@ -7,20 +8,35 @@ describe('AuthorizeHttpGetClientDecorator', () => {
   let headers: string;
   let getStorageSpy: GetStorageSpy;
   let sut: AuthorizeHttpGetClientDecorator;
+  let httpGetClientSpy: HttpGetClientSpy;
 
   beforeAll(() => {
     url = faker.internet.url();
     headers = faker.helpers.arrayElement(['any_data']);
     getStorageSpy = new GetStorageSpy();
+    httpGetClientSpy = new HttpGetClientSpy();
   });
 
   beforeEach(() => {
-    sut = new AuthorizeHttpGetClientDecorator(getStorageSpy);
+    sut = new AuthorizeHttpGetClientDecorator(getStorageSpy, httpGetClientSpy);
   });
 
-  it('Should call getStorage with correct value', () => {
-    sut.get({ url, headers });
+  it('Should call getStorage with correct value', async () => {
+    await sut.get({ url, headers });
 
     expect(getStorageSpy.key).toBe('account');
+  });
+
+  it('Should not add headers if getStorage is invalid', async () => {
+    const httpRequest: HttpGetClientParams.Input = {
+      url,
+      headers: {
+        field: faker.word.words(),
+      },
+    };
+    await sut.get(httpRequest);
+
+    expect(httpGetClientSpy.url).toBe(httpRequest.url);
+    expect(httpGetClientSpy.headers).toEqual(httpRequest.headers);
   });
 });
