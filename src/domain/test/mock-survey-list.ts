@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { type LoadSurveyListParams } from '../usecases';
+import { type LoadSurveyList, type LoadSurveyListParams } from '../usecases';
 
 export const mockSurveyModel = (): LoadSurveyListParams.Output => ({
   id: faker.string.uuid(),
@@ -13,3 +13,14 @@ export const mockSurveyListModel = (): LoadSurveyListParams.Output[] => [
   mockSurveyModel(),
   mockSurveyModel(),
 ];
+
+export class LoadSurveyListSpy implements LoadSurveyList {
+  callsCount = 0;
+  surveys = mockSurveyListModel();
+
+  async loadAll(): Promise<LoadSurveyListParams.Output[]> {
+    this.callsCount++;
+
+    return this.surveys;
+  }
+}

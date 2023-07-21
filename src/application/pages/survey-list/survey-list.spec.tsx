@@ -1,19 +1,7 @@
 import { SurveyList } from '@/application/pages'
-import { mockSurveyListModel } from '@/domain/test'
-import { type LoadSurveyList, type LoadSurveyListParams } from '@/domain/usecases'
+import { LoadSurveyListSpy } from '@/domain/test'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
-
-class LoadSurveyListSpy implements LoadSurveyList {
-  callsCount = 0
-  surveys = mockSurveyListModel()
-
-  async loadAll(): Promise<LoadSurveyListParams.Output[]> {
-    this.callsCount++
-
-    return this.surveys
-  }
-}
 
 describe('SurveyList Component', () => {
   let loadSurveyListSpy: LoadSurveyListSpy
