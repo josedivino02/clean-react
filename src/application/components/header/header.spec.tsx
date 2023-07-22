@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom'
 
 describe('Header Component', () => {
   let history: MemoryHistory
-  let setCurrentAccountMock: jest.Mock
+  let setCurrentAccountMock: (account: AccountModel) => void
   let account: AccountModel
 
   beforeAll(() => {

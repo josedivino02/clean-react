@@ -1,5 +1,6 @@
 import { ApiContext } from '@/application/contexts'
 import SurveyList from '@/application/pages/survey-list/survey-list'
+import { type AccountModel } from '@/domain/models'
 import { LoadSurveyListSpy, mockAccountModel } from '@/domain/test'
 import { render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory, type MemoryHistory } from 'history'
@@ -9,13 +10,15 @@ import { Router } from 'react-router-dom'
 describe('SurveyList Component', () => {
   let loadSurveyListSpy: LoadSurveyListSpy
   let history: MemoryHistory
+  let setCurrentAccountMock: (account: AccountModel) => void
 
   beforeEach(() => {
     loadSurveyListSpy = new LoadSurveyListSpy()
     history = createMemoryHistory({ initialEntries: ['/'] })
+    setCurrentAccountMock = jest.fn()
 
     render(
-      <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
         <Router location={''} navigator={history}>
           <SurveyList loadSurveyList={loadSurveyListSpy} />
         </Router >
@@ -43,7 +46,7 @@ describe('SurveyList Component', () => {
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(3)
   })
 
-  // it('Should render error on failure', async () => {
+  // it('Should render error on UnexpectedError', async () => {
   //   const error = new UnexpectedError()
   //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error)
 
@@ -51,6 +54,14 @@ describe('SurveyList Component', () => {
 
   //   expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument()
   //   expect(screen.getByTestId('error')).toHaveTextContent(error.message)
+  // })
+
+  // it('Should logout on AccessDeniedError', async () => {
+  //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new AccessDeniedError())
+
+  //   await waitFor(() => screen.getByRole('heading'))
+  //   expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+  //   expect(history.location.pathname).toBe('/login')
   // })
 
   // it('Should call LoadSurveyList on reload', async () => {
