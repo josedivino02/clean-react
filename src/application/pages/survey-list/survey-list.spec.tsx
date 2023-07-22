@@ -1,14 +1,27 @@
-import { SurveyList } from '@/application/pages'
+import { ApiContext } from '@/application/contexts'
+import SurveyList from '@/application/pages/survey-list/survey-list'
 import { LoadSurveyListSpy } from '@/domain/test'
 import { render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory, type MemoryHistory } from 'history'
 import React from 'react'
+import { Router } from 'react-router-dom'
 
 describe('SurveyList Component', () => {
   let loadSurveyListSpy: LoadSurveyListSpy
+  let history: MemoryHistory
+  let setCurrentAccountMock: jest.Mock
 
   beforeEach(() => {
     loadSurveyListSpy = new LoadSurveyListSpy()
-    render(<SurveyList loadSurveyList={loadSurveyListSpy} />)
+    history = createMemoryHistory({ initialEntries: ['/'] })
+    setCurrentAccountMock = jest.fn()
+    render(
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+        <Router location={''} navigator={history}>
+          <SurveyList loadSurveyList={loadSurveyListSpy} />
+        </Router >
+      </ApiContext.Provider>
+    )
   })
 
   it('Should present 4 empty items on start', async () => {
