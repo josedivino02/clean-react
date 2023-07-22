@@ -1,6 +1,6 @@
 import { ApiContext } from '@/application/contexts'
 import SurveyList from '@/application/pages/survey-list/survey-list'
-import { LoadSurveyListSpy } from '@/domain/test'
+import { LoadSurveyListSpy, mockAccountModel } from '@/domain/test'
 import { render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory, type MemoryHistory } from 'history'
 import React from 'react'
@@ -9,14 +9,13 @@ import { Router } from 'react-router-dom'
 describe('SurveyList Component', () => {
   let loadSurveyListSpy: LoadSurveyListSpy
   let history: MemoryHistory
-  let setCurrentAccountMock: jest.Mock
 
   beforeEach(() => {
     loadSurveyListSpy = new LoadSurveyListSpy()
     history = createMemoryHistory({ initialEntries: ['/'] })
-    setCurrentAccountMock = jest.fn()
+
     render(
-      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
         <Router location={''} navigator={history}>
           <SurveyList loadSurveyList={loadSurveyListSpy} />
         </Router >
