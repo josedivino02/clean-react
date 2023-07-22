@@ -58,7 +58,8 @@ describe('SurveyList Component', () => {
   //   jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError())
 
   //   await waitFor(() => screen.getByRole('heading'))
-  //   fireEvent.click(screen.getByTestId('reload'))
+  //   const reload = screen.getByTestId('reload')
+  //   fireEvent.click(reload)
   //   expect(loadSurveyListSpy.callsCount).toBe(1)
   //   await waitFor(() => screen.getByRole('heading'))
   // })

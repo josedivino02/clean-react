@@ -1,15 +1,20 @@
 import Header from '@/application/components/header/header'
 import { ApiContext } from '@/application/contexts'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, type MemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
 
 describe('Header Component', () => {
-  it('Should call SetCurrentAccount with null', () => {
-    const history = createMemoryHistory({ initialEntries: ['/'] })
-    const setCurrentAccountMock = jest.fn()
+  let history: MemoryHistory
+  let setCurrentAccountMock: jest.Mock
 
+  beforeAll(() => {
+    history = createMemoryHistory({ initialEntries: ['/'] })
+    setCurrentAccountMock = jest.fn()
+  })
+
+  beforeEach(() => {
     render(
       <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
         <Router location={''} navigator={history}>
@@ -17,7 +22,9 @@ describe('Header Component', () => {
         </Router>
       </ApiContext.Provider>
     )
+  })
 
+  it('Should call SetCurrentAccount with null', () => {
     const logout = screen.getByTestId('logout')
     fireEvent.click(logout)
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
