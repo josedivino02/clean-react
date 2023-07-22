@@ -1,16 +1,15 @@
 import { Logo } from '@/application/components'
 import { ApiContext } from '@/application/contexts'
+import { useLogout } from '@/application/hooks'
 import React, { memo, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Styles from './header-styles.scss'
 
 const Header: React.FC = () => {
-  const { setCurrentAccount, getCurrentAccount } = useContext(ApiContext)
-  const navigate = useNavigate();
-  const logout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+  const logout = useLogout()
+  const { getCurrentAccount } = useContext(ApiContext)
+  const buttonClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     event.preventDefault()
-    setCurrentAccount(undefined)
-    navigate('/login')
+    logout()
   }
   return (
     <header className={Styles.headerWrap}>
@@ -18,7 +17,7 @@ const Header: React.FC = () => {
         <Logo />
         <div className={Styles.logoutWrap}>
           <span data-testid="username">{getCurrentAccount().name}</span>
-          <a data-testid="logout" href="#" onClick={logout}>Sair</a>
+          <a data-testid="logout" href="#" onClick={buttonClick}>Sair</a>
         </div>
       </div>
     </header>
