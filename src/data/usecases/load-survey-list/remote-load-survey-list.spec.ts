@@ -1,6 +1,6 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
 import { HttpGetClientSpy, mockRemoteSurveyListModel } from '@/data/test';
-import { UnexpectedError } from '@/domain/errors';
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import { faker } from '@faker-js/faker';
 import { RemoteLoadSurveyList } from './remote-load-survey-list';
 
@@ -21,14 +21,14 @@ describe('RemoteLoadSurveyList', () => {
     expect(httpGetClientSpy.url).toBe(url);
   });
 
-  it('Should throw UnexpectedError if HttpGetClient return 403', async () => {
+  it('Should throw AccessDeniedError if HttpGetClient return 403', async () => {
     httpGetClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.forbidden,
     };
 
     const promise = sut.loadAll();
 
-    await expect(promise).rejects.toThrow(new UnexpectedError());
+    await expect(promise).rejects.toThrow(new AccessDeniedError());
   });
 
   it('Should throw UnexpectedError if HttpGetClient return 404', async () => {
