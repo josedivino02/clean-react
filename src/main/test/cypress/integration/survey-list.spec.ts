@@ -18,4 +18,10 @@ describe('SurveyList', () => {
       'something wrong happened. Try again soon',
     );
   });
+
+  it('Should logout on AccessDeniedError', () => {
+    Http.mockAccessDeniedError();
+    cy.visit('');
+    Helper.testUrl('login');
+  });
 });

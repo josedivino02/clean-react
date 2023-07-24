@@ -7,7 +7,7 @@ const PrivateRoute: React.FC<RouteProps> = (props: RouteProps) => {
 
   return getCurrentAccount()?.accessToken
     ? <Route {...props} />
-    : <Navigate to={'/login'} />
+    : <Navigate to='/login' />
 }
 
 export default PrivateRoute;
