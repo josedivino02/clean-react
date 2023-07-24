@@ -22,7 +22,7 @@ const Router: React.FC = () => {
             path='/'
             element={
               <PrivateRoute>
-                <Route path='/' Component={makeSurveyList} />
+                <Route index Component={makeSurveyList} />
               </PrivateRoute>
             }
           />
