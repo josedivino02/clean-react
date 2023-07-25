@@ -32,10 +32,6 @@ module.exports = merge(common, {
       },
     ],
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
   plugins: [
     new DefinePlugin({
       'process.env.API_URL': JSON.stringify('http://localhost:5050/api/'),
