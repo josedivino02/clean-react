@@ -1,11 +1,12 @@
 {
   "name": "clean-react",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "dev:base": "webpack-dev-server --config webpack.dev.js",
+    "dev": "npm run dev:base -- --open",
     "build": "webpack --config webpack.prod.js",
     "test": "cross-env NODE_ICU_DATA=node_modules/full-icu jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm t -- --watch",
@@ -15,7 +16,9 @@
     "lint:fix": "npm run lint -- --fix",
     "prepare": "husky install",
     "check": "npm-check -u -s",
-    "test:cypress": "cypress open"
+    "test:cypress": "cypress open",
+    "test:cypress:run": "cypress run",
+    "test:cypress:ci": "start-server-and-test dev:base http-get://localhost:8080 test:cypress:run"
   },
   "keywords": [],
   "author": "",
@@ -61,6 +64,7 @@
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
     "sass-loader": "^13.3.2",
+    "start-server-and-test": "^2.0.0",
     "style-loader": "^3.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",

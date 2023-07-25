@@ -21,7 +21,7 @@ const Router: React.FC = () => {
           <Route
             path='/'
             element={
-              <PrivateRoute>
+              <PrivateRoute path='/'>
                 <Route index Component={makeSurveyList} />
               </PrivateRoute>
             }
