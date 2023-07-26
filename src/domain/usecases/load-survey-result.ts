@@ -1,16 +1,13 @@
 export namespace LoadSurveyResultParams {
   export type Output = {
-    id: string;
     question: string;
-    answers: [
-      {
-        image?: string;
-        answer: string;
-        count: number;
-        percent: number;
-      },
-    ];
     date: Date;
+    answers: Array<{
+      image?: string;
+      answer: string;
+      count: number;
+      percent: number;
+    }>;
   };
 }
 export interface LoadSurveyResult {

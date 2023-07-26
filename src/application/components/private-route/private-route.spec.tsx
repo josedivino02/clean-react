@@ -18,7 +18,7 @@ describe('PrivateRoute', () => {
 
   it('Should render current component if token is not empty', () => {
     render(<ApiContext.Provider value={{ getCurrentAccount: () => account }}>
-      <Router location='' navigator={history}>
+      <Router location='/' navigator={history}>
         <Routes>
           <Route element={<PrivateRoute />} />
         </Routes>
