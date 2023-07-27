@@ -1,9 +1,9 @@
-import { Spinner } from '@/application/components'
-import Footer from '@/application/components/footer/footer'
-import Header from '@/application/components/header/header'
 import React from 'react'
 import FlipMove from 'react-flip-move'
 import Styles from './survey-result-styles.scss'
+import { Loading } from '@/application/components'
+import Footer from '@/application/components/footer/footer'
+import Header from '@/application/components/header/header'
 
 const SurveyResult: React.FC = () => {
   return (
@@ -24,12 +24,7 @@ const SurveyResult: React.FC = () => {
           </li>
         </FlipMove>
         <button>Voltar</button>
-        <div className={Styles.loadingWrap}>
-          <div className={Styles.loading}>
-            <span>Aguarde...</span>
-            <Spinner isNegative />
-          </div>
-        </div>
+        {false && <Loading />}
       </div>
       <Footer />
     </div>
