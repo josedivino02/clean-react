@@ -7,6 +7,7 @@ export namespace LoadSurveyResultParams {
       answer: string;
       count: number;
       percent: number;
+      isCurrentAccountAnswer: boolean;
     }>;
   };
 }

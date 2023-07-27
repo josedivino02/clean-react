@@ -11,11 +11,13 @@ export const mockRemoteSurveyResultModel =
         answer: faker.word.words(),
         count: faker.number.int(),
         percent: faker.number.int(100),
+        isCurrentAccountAnswer: faker.datatype.boolean(),
       },
       {
         answer: faker.word.words(),
         count: faker.number.int(),
         percent: faker.number.int(100),
+        isCurrentAccountAnswer: faker.datatype.boolean(),
       },
     ],
   });
