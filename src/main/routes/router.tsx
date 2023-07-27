@@ -1,5 +1,6 @@
 import { PrivateRoute } from '@/application/components';
 import { ApiContext } from '@/application/contexts';
+import { SurveyResult } from '@/application/pages';
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters/current-account-adapter';
 import { makeLogin } from '@/main/factories/pages/login/login-factory';
 import { makeSignUp } from '@/main/factories/pages/signup/sign-up-factory';
@@ -23,6 +24,14 @@ const Router: React.FC = () => {
             element={
               <PrivateRoute path='/'>
                 <Route index Component={makeSurveyList} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/surveys'
+            element={
+              <PrivateRoute path='/surveys'>
+                <Route index Component={SurveyResult} />
               </PrivateRoute>
             }
           />
