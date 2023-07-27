@@ -32,12 +32,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     const emailError = validation.validate('email', formData)
     const passwordError = validation.validate('password', formData)
 
-    setState({
-      ...state,
+    setState(old => ({
+      ...old,
       emailError,
       passwordError,
       isFormInvalid: !!emailError || !!passwordError
-    })
+    }))
   }, [state.email, state.password])
 
   // useEffect(() => { validate('email') }, [state.email])
@@ -54,7 +54,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     event.preventDefault()
     try {
       if (state.isLoading || state.isFormInvalid) return
-      setState({ ...state, isLoading: true })
+      setState(old => ({ ...old, isLoading: true }))
       const account = await authentication.auth({
         email: state.email,
         password: state.password
@@ -64,11 +64,11 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
       navigate('/')
     } catch (error) {
-      setState({
-        ...state,
+      setState(old => ({
+        ...old,
         isLoading: false,
         mainError: error.message
-      })
+      }))
     }
   }
 
