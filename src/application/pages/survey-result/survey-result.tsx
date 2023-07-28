@@ -1,4 +1,4 @@
-import { Loading } from '@/application/components'
+import { Calendar, Loading } from '@/application/components'
 import Footer from '@/application/components/footer/footer'
 import Header from '@/application/components/header/header'
 import React from 'react'
@@ -10,7 +10,11 @@ const SurveyResult: React.FC = () => {
     <div className={Styles.surveyResultWrap}>
       <Header />
       <div className={Styles.contentWrap}>
-        <h2>Pergunta</h2>
+        <hgroup>
+          <Calendar date={new Date()} className={Styles.calendarWrap} />
+          <h2>Pergunta</h2>
+        </hgroup>
+
         <FlipMove className={Styles.answersList}>
           <li>
             <img src="" alt="" />
