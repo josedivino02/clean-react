@@ -1,9 +1,9 @@
-import React from 'react'
-import FlipMove from 'react-flip-move'
-import Styles from './survey-result-styles.scss'
 import { Loading } from '@/application/components'
 import Footer from '@/application/components/footer/footer'
 import Header from '@/application/components/header/header'
+import React from 'react'
+import FlipMove from 'react-flip-move'
+import Styles from './survey-result-styles.scss'
 
 const SurveyResult: React.FC = () => {
   return (
