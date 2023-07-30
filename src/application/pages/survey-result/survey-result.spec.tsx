@@ -39,15 +39,16 @@ describe('SurveyResult Component', () => {
   })
 
   // it('Should present SurveyResult data on success', async () => {
+  //   const loadSurveyResultSpy2 = new LoadSurveyResultSpy()
   //   surveyResult = Object.assign(mockSurveyResultModel(), {
   //     date: new Date('2023-07-30T00:00:00')
   //   })
-  //   loadSurveyResultSpy.surveyResult = surveyResult
+  //   loadSurveyResultSpy2.surveyResult = surveyResult
   //   await waitFor(() => screen.getByTestId('survey-result'))
   //   render(
   //     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
   //       <Router location={'/'} navigator={history}>
-  //         <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
+  //         <SurveyResult loadSurveyResult={loadSurveyResultSpy2} />
   //       </Router >
   //     </ApiContext.Provider>
   //   )
@@ -70,5 +71,24 @@ describe('SurveyResult Component', () => {
   //   const percents = screen.queryAllByTestId('percent')
   //   expect(percents[0]).toHaveTextContent(`${surveyResult.answers[0].percent}%`)
   //   expect(percents[1]).toHaveAttribute(`${surveyResult.answers[1].percent}%`)
+  // })
+
+  // it('Should render error on UnexpectedError', async () => {
+  //   await waitFor(() => screen.getByRole('survey-result'))
+  //   const loadSurveyResultSpy2 = new LoadSurveyResultSpy()
+  //   const error = new UnexpectedError()
+  //   jest.spyOn(loadSurveyResultSpy2, 'load').mockRejectedValueOnce(error)
+
+  //   render(
+  //     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+  //       <Router location={'/'} navigator={history}>
+  //         <SurveyResult loadSurveyResult={loadSurveyResultSpy2} />
+  //       </Router >
+  //     </ApiContext.Provider>
+  //   )
+
+  //   expect(screen.queryByTestId('question')).not.toBeInTheDocument()
+  //   expect(screen.getByTestId('error')).toHaveTextContent(error.message)
+  //   expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
   // })
 })
