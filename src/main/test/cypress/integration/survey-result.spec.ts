@@ -7,6 +7,10 @@ export const mockUnexpectedError = (): void => {
   Http.mockServerError(path, 'GET');
 };
 
+export const mockAccessDeniedError = (): void => {
+  Http.mockForbiddenError(path, 'GET');
+};
+
 export const mockSuccess = (): void => {
   Http.mockOk(path, 'GET', 'fx:survey-result');
 };
@@ -37,5 +41,11 @@ describe('SurveyResult', () => {
     mockSuccess();
     cy.getByTestId('reload').click();
     cy.getByTestId('question').should('exist');
+  });
+
+  it('Should logout on AccessDeniedError', () => {
+    mockAccessDeniedError();
+    cy.visit('/surveys/any_id');
+    Helper.testUrl('login');
   });
 });
