@@ -1,4 +1,5 @@
 import { Calendar } from '@/application/components';
+import { SurveyResultAnswer } from '@/application/pages/survey-result/components';
 import { type LoadSurveyResultParams } from '@/domain/usecases';
 import React from 'react';
 import FlipMove from 'react-flip-move';
@@ -21,13 +22,9 @@ const Result: React.FC<Props> = ({ surveyResult }: Props) => {
         </hgroup>
 
         <FlipMove data-testid="answers" className={Styles.answersList}>
-          {surveyResult.answers.map(answer =>
-            <li data-testid="answer-wrap" key={answer.answer} className={answer.isCurrentAccountAnswer ? Styles.active : ''}>
-              {answer.image && <img data-testid="image" src={answer.image} alt={answer.answer} />}
-              <span data-testid="answer" className={Styles.answer}>{answer.answer}</span>
-              <span data-testid="percent" className={Styles.percent}>{answer.percent}%</span>
-            </li>
-          )}
+          <>
+            {surveyResult.answers.map(answer => <SurveyResultAnswer answer={answer} key={answer.answer} />)}
+          </>
         </FlipMove>
         <button className={Styles.button} data-testid="back-button" onClick={() => { navigate('/'); }}>Voltar</button>
       </>
