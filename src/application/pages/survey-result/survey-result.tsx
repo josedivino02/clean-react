@@ -1,16 +1,23 @@
-import { Calendar, Loading } from '@/application/components'
+import { Calendar, Error, Loading } from '@/application/components'
 import Footer from '@/application/components/footer/footer'
 import Header from '@/application/components/header/header'
-import React from 'react'
+import { type LoadSurveyListParams } from '@/domain/usecases'
+import React, { useState } from 'react'
 import FlipMove from 'react-flip-move'
 import Styles from './survey-result-styles.scss'
 
 const SurveyResult: React.FC = () => {
+  const [state] = useState({
+    isLoading: false,
+    error: '',
+    surveyResult: null as LoadSurveyListParams.Output
+  })
+
   return (
     <div className={Styles.surveyResultWrap}>
       <Header />
-      <div className={Styles.contentWrap}>
-        {false &&
+      <div data-testid="survey-result" className={Styles.contentWrap}>
+        {state.surveyResult &&
           <>
             <hgroup>
               <Calendar date={new Date()} className={Styles.calendarWrap} />
@@ -32,7 +39,8 @@ const SurveyResult: React.FC = () => {
             <button>Voltar</button>
           </>
         }
-        {true && <Loading />}
+        {state.isLoading && <Loading />}
+        {state.error && <Error error={state.error} reload={() => { }} />}
       </div>
       <Footer />
     </div>
