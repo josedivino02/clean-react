@@ -1,11 +1,10 @@
-import { Calendar, Error, Loading } from '@/application/components'
+import { Error, Loading } from '@/application/components'
 import Footer from '@/application/components/footer/footer'
 import Header from '@/application/components/header/header'
 import { useErrorHandler } from '@/application/hooks'
+import { SurveyResultData } from '@/application/pages/survey-result/components'
 import { type LoadSurveyResult, type LoadSurveyResultParams } from '@/domain/usecases'
 import React, { useEffect, useState } from 'react'
-import FlipMove from 'react-flip-move'
-import { useNavigate } from 'react-router-dom'
 import Styles from './survey-result-styles.scss'
 
 type Props = {
@@ -23,7 +22,6 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   })
 
   const reload = (): void => { setState(old => ({ surveyResult: null, error: '', reload: !old.reload, isLoading: false })); }
-  const navigate = useNavigate()
 
   useEffect(() => {
     loadSurveyResult.load()
@@ -35,25 +33,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
     <div className={Styles.surveyResultWrap}>
       <Header />
       <div data-testid="survey-result" className={Styles.contentWrap}>
-        {state.surveyResult &&
-          <>
-            <hgroup>
-              <Calendar date={state.surveyResult.date} className={Styles.calendarWrap} />
-              <h2 data-testid='question'>{state.surveyResult.question}</h2>
-            </hgroup>
-
-            <FlipMove data-testid="answers" className={Styles.answersList}>
-              {state.surveyResult.answers.map(answer =>
-                <li data-testid="answer-wrap" key={answer.answer} className={answer.isCurrentAccountAnswer ? Styles.active : ''}>
-                  {answer.image && <img data-testid="image" src={answer.image} alt={answer.answer} />}
-                  <span data-testid="answer" className={Styles.answer}>{answer.answer}</span>
-                  <span data-testid="percent" className={Styles.percent}>{answer.percent}%</span>
-                </li>
-              )}
-            </FlipMove>
-            <button data-testid="back-button" onClick={() => { navigate('/'); }}>Voltar</button>
-          </>
-        }
+        {state.surveyResult && <SurveyResultData surveyResult={state.surveyResult} />}
         {state.isLoading && <Loading />}
         {state.error && <Error error={state.error} reload={reload} />}
       </div>
