@@ -68,19 +68,19 @@ describe('SurveyList', () => {
     cy.get('li:empty').should('have.length', 4);
     cy.get('li:not(:empty)').should('have.length', 2);
     cy.get('li:nth-child(1)').then(li => {
-      assert.equal(li.find('[data-testid]="day').text(), '24');
-      assert.equal(li.find('[data-testid]="month').text(), 'jul');
-      assert.equal(li.find('[data-testid]="year').text(), '2023');
-      assert.equal(li.find('[data-testid]="question').text(), 'Question 1');
+      assert.equal(li.find('[data-testid]="day"').text(), '24');
+      assert.equal(li.find('[data-testid]="month"').text(), 'jul');
+      assert.equal(li.find('[data-testid]="year"').text(), '2023');
+      assert.equal(li.find('[data-testid]="question"').text(), 'Question 1');
       cy.fixture('icons').then(icon => {
-        assert.equal(li.find('[data-testid]="icon').attr('src'), icon.thumbUp);
+        assert.equal(li.find('[data-testid]="icon"').attr('src'), icon.thumbUp);
       });
     });
     cy.get('li:nth-child(2)').then(li => {
-      assert.equal(li.find('[data-testid]="day').text(), '24');
-      assert.equal(li.find('[data-testid]="month').text(), 'jul');
-      assert.equal(li.find('[data-testid]="year').text(), '2023');
-      assert.equal(li.find('[data-testid]="question').text(), 'Question 1');
+      assert.equal(li.find('[data-testid]="day"').text(), '24');
+      assert.equal(li.find('[data-testid]="month"').text(), 'jul');
+      assert.equal(li.find('[data-testid]="year"').text(), '2023');
+      assert.equal(li.find('[data-testid]="question"').text(), 'Question 1');
       cy.fixture('icons').then(icon => {
         assert.equal(
           li.find('[data-testid]="icon').attr('src'),
