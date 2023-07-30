@@ -1,4 +1,5 @@
 import ApiContext from '@/application/contexts/api/api-context'
+import { type AccountModel } from '@/domain/models'
 import { LoadSurveyResultSpy, mockAccountModel } from '@/domain/test'
 import { render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory, type MemoryHistory } from 'history'
@@ -10,13 +11,15 @@ describe('SurveyResult Component', () => {
   let history: MemoryHistory
   let loadSurveyResultSpy: LoadSurveyResultSpy
   // let surveyResult: LoadSurveyResultParams.Output
+  let setCurrentAccountMock: (account: AccountModel) => void
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/'] })
     loadSurveyResultSpy = new LoadSurveyResultSpy()
+    setCurrentAccountMock = jest.fn()
 
     render(
-      <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
         <Router location={'/'} navigator={history}>
           <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
         </Router >
@@ -74,10 +77,10 @@ describe('SurveyResult Component', () => {
   // })
 
   // it('Should render error on UnexpectedError', async () => {
-  //   await waitFor(() => screen.getByRole('survey-result'))
   //   const loadSurveyResultSpy2 = new LoadSurveyResultSpy()
   //   const error = new UnexpectedError()
   //   jest.spyOn(loadSurveyResultSpy2, 'load').mockRejectedValueOnce(error)
+  //   await waitFor(() => screen.getByTestId('survey-result'))
 
   //   render(
   //     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
@@ -90,5 +93,23 @@ describe('SurveyResult Component', () => {
   //   expect(screen.queryByTestId('question')).not.toBeInTheDocument()
   //   expect(screen.getByTestId('error')).toHaveTextContent(error.message)
   //   expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  // })
+
+  // it('Should logout on AccessDeniedError', async () => {
+  //   const loadSurveyResultSpy2 = new LoadSurveyResultSpy()
+  //   await waitFor(() => screen.getByRole('survey-result'))
+  //   jest.spyOn(loadSurveyResultSpy2, 'load').mockRejectedValueOnce(new AccessDeniedError())
+
+  //   render(
+  //     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+  //       <Router location={'/'} navigator={history}>
+  //         <SurveyResult loadSurveyResult={loadSurveyResultSpy2} />
+  //       </Router >
+  //     </ApiContext.Provider>
+  //   )
+
+  //   await waitFor(() => screen.getByTestId('survey-result'))
+  //   expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+  //   expect(history.location.pathname).toBe('/login')
   // })
 })
