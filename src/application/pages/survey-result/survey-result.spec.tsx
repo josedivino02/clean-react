@@ -1,7 +1,7 @@
 import ApiContext from '@/application/contexts/api/api-context'
 import { type AccountModel } from '@/domain/models'
 import { LoadSurveyResultSpy, mockAccountModel } from '@/domain/test'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory, type MemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -14,7 +14,7 @@ describe('SurveyResult Component', () => {
   let setCurrentAccountMock: (account: AccountModel) => void
 
   beforeEach(() => {
-    history = createMemoryHistory({ initialEntries: ['/'] })
+    history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 })
     loadSurveyResultSpy = new LoadSurveyResultSpy()
     setCurrentAccountMock = jest.fn()
 
@@ -130,4 +130,10 @@ describe('SurveyResult Component', () => {
   //   expect(loadSurveyListSpy.callsCount).toBe(1)
   //   await waitFor(() => screen.getByRole('survey-result'))
   // })
+
+  it('Should goto SurveyList on back button click', async () => {
+    await waitFor(() => screen.getByTestId('survey-result'))
+    fireEvent.click(screen.getByTestId('back-button'))
+    expect(history.location.pathname).toBe('/')
+  })
 })

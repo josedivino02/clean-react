@@ -5,6 +5,7 @@ import { useErrorHandler } from '@/application/hooks'
 import { type LoadSurveyResult, type LoadSurveyResultParams } from '@/domain/usecases'
 import React, { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
+import { useNavigate } from 'react-router-dom'
 import Styles from './survey-result-styles.scss'
 
 type Props = {
@@ -22,6 +23,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   })
 
   const reload = (): void => { setState(old => ({ surveyResult: null, error: '', reload: !old.reload, isLoading: false })); }
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadSurveyResult.load()
@@ -49,7 +51,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
                 </li>
               )}
             </FlipMove>
-            <button>Voltar</button>
+            <button data-testid="back-button" onClick={() => { navigate('/'); }}>Voltar</button>
           </>
         }
         {state.isLoading && <Loading />}
