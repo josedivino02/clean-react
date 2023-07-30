@@ -10,24 +10,28 @@ const SurveyResult: React.FC = () => {
     <div className={Styles.surveyResultWrap}>
       <Header />
       <div className={Styles.contentWrap}>
-        <hgroup>
-          <Calendar date={new Date()} className={Styles.calendarWrap} />
-          <h2>Pergunta</h2>
-        </hgroup>
+        {false &&
+          <>
+            <hgroup>
+              <Calendar date={new Date()} className={Styles.calendarWrap} />
+              <h2>Pergunta</h2>
+            </hgroup>
 
-        <FlipMove className={Styles.answersList}>
-          <li>
-            <img src="" alt="" />
-            <span className={Styles.answer}>ReactJs</span>
-            <span className={Styles.percent}>50%</span>
-          </li>
-          <li className={Styles.active}>
-            <img src="" alt="" />
-            <span className={Styles.answer}>ReactJs</span>
-            <span className={Styles.percent}>50%</span>
-          </li>
-        </FlipMove>
-        <button>Voltar</button>
+            <FlipMove className={Styles.answersList}>
+              <li>
+                <img src="" alt="" />
+                <span className={Styles.answer}>ReactJs</span>
+                <span className={Styles.percent}>50%</span>
+              </li>
+              <li className={Styles.active}>
+                <img src="" alt="" />
+                <span className={Styles.answer}>ReactJs</span>
+                <span className={Styles.percent}>50%</span>
+              </li>
+            </FlipMove>
+            <button>Voltar</button>
+          </>
+        }
         {true && <Loading />}
       </div>
       <Footer />
