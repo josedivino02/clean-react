@@ -112,4 +112,22 @@ describe('SurveyResult Component', () => {
   //   expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
   //   expect(history.location.pathname).toBe('/login')
   // })
+
+  // it('Should call LoadSurveyResult on reload', async () => {
+  //   const loadSurveyResultSpy2 = new LoadSurveyResultSpy()
+  //   jest.spyOn(loadSurveyResultSpy2, 'load').mockRejectedValueOnce(new UnexpectedError())
+
+  //   render(
+  //     <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+  //       <Router location={'/'} navigator={history}>
+  //         <SurveyResult loadSurveyResult={loadSurveyResultSpy2} />
+  //       </Router >
+  //     </ApiContext.Provider>
+  //   )
+
+  //   await waitFor(() => screen.getByRole('survey-result'))
+  //   fireEvent.click(screen.getByTestId('reload'))
+  //   expect(loadSurveyListSpy.callsCount).toBe(1)
+  //   await waitFor(() => screen.getByRole('survey-result'))
+  // })
 })
