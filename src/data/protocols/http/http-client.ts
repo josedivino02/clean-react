@@ -1,3 +1,12 @@
+export namespace HttpRequest {
+  export type Input = {
+    url: string;
+    method: HttpMethod;
+    body?: any;
+    headers?: any;
+  };
+}
+
 export namespace HttpStatusCodeParams {
   export enum OutPut {
     ok = 200,
@@ -10,7 +19,13 @@ export namespace HttpStatusCodeParams {
   }
 }
 
+export type HttpMethod = 'post' | 'get' | 'put' | 'delete';
+
 export type HttpResponse<T = any> = {
   statusCode: HttpStatusCodeParams.OutPut;
   body?: T;
 };
+
+export interface HttpClient<R = any> {
+  request: (data: HttpRequest.Input) => Promise<HttpResponse<R>>;
+}

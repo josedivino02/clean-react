@@ -1,7 +1,4 @@
-import {
-  HttpStatusCodeParams,
-  type HttpGetClient,
-} from '@/data/protocols/http';
+import { HttpStatusCodeParams, type HttpClient } from '@/data/protocols/http';
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import {
   type LoadSurveyResult,
@@ -11,11 +8,14 @@ import {
 export class RemoteLoadSurveyResult implements LoadSurveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyResult.Output>,
+    private readonly httpClient: HttpClient<RemoteLoadSurveyResult.Output>,
   ) {}
 
   async load(): Promise<LoadSurveyResultParams.Output> {
-    const httpResponse = await this.httpGetClient.get({ url: this.url });
+    const httpResponse = await this.httpClient.request({
+      url: this.url,
+      method: 'get',
+    });
     const remoteSurveyResult = httpResponse.body;
     switch (httpResponse.statusCode) {
       case HttpStatusCodeParams.OutPut.ok:

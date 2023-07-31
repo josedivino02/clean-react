@@ -1,5 +1,5 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
-import { HttpPostClientSpy } from '@/data/test';
+import { HttpClientSpy } from '@/data/test';
 import { EmailInUseError, UnexpectedError } from '@/domain/errors';
 import { type AccountModel } from '@/domain/models';
 import { mockAddAccountModel, mockAddAccountParams } from '@/domain/test';
@@ -10,38 +10,36 @@ import { RemoteAddAccount } from './remote-add-account';
 describe('RemoteAddAccount', () => {
   let sut: RemoteAddAccount;
   let url: string;
-  let httpPostClientSpy: HttpPostClientSpy<
-    AddAccountParams.Input,
-    RemoteAddAccount.Output
-  >;
+  let httpClientSpy: HttpClientSpy<RemoteAddAccount.Output>;
   let httpResult: AccountModel;
   let addAccountParams: AddAccountParams.Input;
 
   beforeAll(() => {
     httpResult = mockAddAccountModel();
     url = faker.internet.url();
-    httpPostClientSpy = new HttpPostClientSpy();
+    httpClientSpy = new HttpClientSpy();
     addAccountParams = mockAddAccountParams();
   });
 
   beforeEach(() => {
-    sut = new RemoteAddAccount(url, httpPostClientSpy);
+    sut = new RemoteAddAccount(url, httpClientSpy);
   });
 
-  it('Should call HttpClient with correct URL', async () => {
+  it('Should call HttpClient with correct URL and method', async () => {
     await sut.add(addAccountParams);
 
-    expect(httpPostClientSpy.url).toBe(url);
+    expect(httpClientSpy.url).toBe(url);
+    expect(httpClientSpy.method).toBe('post');
   });
 
   it('Should call HttpClient with correct body', async () => {
     await sut.add(addAccountParams);
 
-    expect(httpPostClientSpy.body).toEqual(addAccountParams);
+    expect(httpClientSpy.body).toEqual(addAccountParams);
   });
 
   it('Should throw EmailInUseError if HttpPostClient return 403', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.forbidden,
     };
 
@@ -51,7 +49,7 @@ describe('RemoteAddAccount', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 400', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.badRequest,
     };
 
@@ -61,7 +59,7 @@ describe('RemoteAddAccount', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 500', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.serverError,
     };
 
@@ -71,7 +69,7 @@ describe('RemoteAddAccount', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 404', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.notFound,
     };
 
@@ -81,7 +79,7 @@ describe('RemoteAddAccount', () => {
   });
 
   it('Should return an AccountModel if HttpPostClient returns 200', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.ok,
       body: httpResult,
     };

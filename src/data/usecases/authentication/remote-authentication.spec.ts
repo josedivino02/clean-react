@@ -1,5 +1,5 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
-import { HttpPostClientSpy } from '@/data/test';
+import { HttpClientSpy } from '@/data/test';
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-authentication';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { type AccountModel } from '@/domain/models';
@@ -10,10 +10,7 @@ import { faker } from '@faker-js/faker';
 
 describe('RemoteAuthentication', () => {
   let sut: RemoteAuthentication;
-  let httpPostClientSpy: HttpPostClientSpy<
-    AuthenticationParams.Input,
-    RemoteAuthentication.Output
-  >;
+  let httpClientSpy: HttpClientSpy<RemoteAuthentication.Output>;
   let url: string;
   let authenticationParams: AuthenticationParams.Input;
   let httpResult: AccountModel;
@@ -25,24 +22,25 @@ describe('RemoteAuthentication', () => {
   });
 
   beforeEach(() => {
-    httpPostClientSpy = new HttpPostClientSpy();
-    sut = new RemoteAuthentication(url, httpPostClientSpy);
+    httpClientSpy = new HttpClientSpy();
+    sut = new RemoteAuthentication(url, httpClientSpy);
   });
 
-  it('Should call HttpClient with correct URL', async () => {
+  it('Should call HttpClient with correct URL and method', async () => {
     await sut.auth(authenticationParams);
 
-    expect(httpPostClientSpy.url).toBe(url);
+    expect(httpClientSpy.url).toBe(url);
+    expect(httpClientSpy.method).toBe('post');
   });
 
   it('Should call HttpClient with correct body', async () => {
     await sut.auth(authenticationParams);
 
-    expect(httpPostClientSpy.body).toEqual(authenticationParams);
+    expect(httpClientSpy.body).toEqual(authenticationParams);
   });
 
   it('Should throw  InvalidCredentialError if HttpPostClient return 401', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.unauthorized,
     };
 
@@ -52,7 +50,7 @@ describe('RemoteAuthentication', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 400', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.badRequest,
     };
 
@@ -62,7 +60,7 @@ describe('RemoteAuthentication', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 500', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.serverError,
     };
 
@@ -72,7 +70,7 @@ describe('RemoteAuthentication', () => {
   });
 
   it('Should throw UnexpectedError if HttpPostClient return 404', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.notFound,
     };
 
@@ -82,7 +80,7 @@ describe('RemoteAuthentication', () => {
   });
 
   it('Should return an AccountModel if HttpPostClient returns 200', async () => {
-    httpPostClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.ok,
       body: httpResult,
     };
