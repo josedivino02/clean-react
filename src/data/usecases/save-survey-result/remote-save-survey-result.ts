@@ -1,5 +1,6 @@
 import { type RemoteSurveyResultModel } from '@/data/models';
-import { type HttpClient } from '@/data/protocols/http';
+import { HttpStatusCodeParams, type HttpClient } from '@/data/protocols/http';
+import { AccessDeniedError } from '@/domain/errors';
 import {
   type SaveSurveyResult,
   type SaveSurveyResultParams,
@@ -14,13 +15,18 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
   async save(
     input: SaveSurveyResultParams.Input,
   ): Promise<SaveSurveyResultParams.Output> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'put',
       body: input,
     });
 
-    return null;
+    switch (httpResponse.statusCode) {
+      case HttpStatusCodeParams.OutPut.forbidden:
+        throw new AccessDeniedError();
+      default:
+        return null;
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
 import { HttpClientSpy } from '@/data/test';
+import { AccessDeniedError } from '@/domain/errors';
 import { mockSaveSurveyResultParams } from '@/domain/test';
 import { type SaveSurveyResultParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
@@ -28,5 +29,14 @@ describe('RemoteSaveSurveyResult', () => {
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe('put');
     expect(httpClientSpy.body).toEqual(saveSurveyResultParams);
+  });
+
+  it('Should throw AccessDeniedError if HttpClient return 403', async () => {
+    httpClientSpy.response = {
+      statusCode: HttpStatusCodeParams.OutPut.forbidden,
+    };
+
+    const promise = sut.save(saveSurveyResultParams);
+    await expect(promise).rejects.toThrow(new AccessDeniedError());
   });
 });
