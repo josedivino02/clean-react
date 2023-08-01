@@ -1,6 +1,6 @@
 import ApiContext from '@/application/contexts/api/api-context'
 import { type AccountModel } from '@/domain/models'
-import { LoadSurveyResultSpy, mockAccountModel } from '@/domain/test'
+import { LoadSurveyResultSpy, SaveSurveyResultSpy, mockAccountModel } from '@/domain/test'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory, type MemoryHistory } from 'history'
 import React from 'react'
@@ -10,18 +10,23 @@ import SurveyResult from './survey-result'
 describe('SurveyResult Component', () => {
   let history: MemoryHistory
   let loadSurveyResultSpy: LoadSurveyResultSpy
+  let saveSurveyResultSpy: SaveSurveyResultSpy
   // let surveyResult: LoadSurveyResultParams.Output
   let setCurrentAccountMock: (account: AccountModel) => void
 
   beforeEach(() => {
     history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 })
     loadSurveyResultSpy = new LoadSurveyResultSpy()
+    saveSurveyResultSpy = new SaveSurveyResultSpy()
     setCurrentAccountMock = jest.fn()
 
     render(
       <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
         <Router location={'/'} navigator={history}>
-          <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
+          <SurveyResult
+            loadSurveyResult={loadSurveyResultSpy}
+            saveSurveyResult={saveSurveyResultSpy}
+          />
         </Router >
       </ApiContext.Provider>
     )
@@ -142,5 +147,16 @@ describe('SurveyResult Component', () => {
     const answerWrap = screen.queryAllByTestId('answer-wrap')
     fireEvent.click(answerWrap[0])
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  })
+
+  it('Should call SaveSurveyResult on non active answer click', async () => {
+    await waitFor(() => screen.getByTestId('survey-result'))
+    const answerWrap = screen.queryAllByTestId('answer-wrap')
+    fireEvent.click(answerWrap[1])
+    expect(screen.queryByTestId('loading')).toBeInTheDocument()
+    expect(saveSurveyResultSpy.input).toEqual({
+      answer: loadSurveyResultSpy.surveyResult.answers[1].answer
+    })
+    await waitFor(() => screen.getByTestId('survey-result'))
   })
 })

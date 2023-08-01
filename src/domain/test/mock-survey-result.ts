@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import {
   type LoadSurveyResult,
   type LoadSurveyResultParams,
+  type SaveSurveyResult,
   type SaveSurveyResultParams,
 } from '../usecases';
 
@@ -35,6 +36,19 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
 
   async load(): Promise<LoadSurveyResultParams.Output> {
     this.callsCount++;
+
+    return this.surveyResult;
+  }
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  input: SaveSurveyResultParams.Input;
+  surveyResult = mockSurveyResultModel();
+
+  async save(
+    input: SaveSurveyResultParams.Input,
+  ): Promise<SaveSurveyResultParams.Output> {
+    this.input = input;
 
     return this.surveyResult;
   }
