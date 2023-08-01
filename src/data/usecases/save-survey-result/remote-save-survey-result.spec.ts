@@ -54,7 +54,6 @@ describe('RemoteSaveSurveyResult', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCodeParams.OutPut.serverError,
     };
-
     const promise = sut.save(saveSurveyResultParams);
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
