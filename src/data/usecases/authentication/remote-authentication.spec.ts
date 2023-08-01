@@ -26,16 +26,11 @@ describe('RemoteAuthentication', () => {
     sut = new RemoteAuthentication(url, httpClientSpy);
   });
 
-  it('Should call HttpClient with correct URL and method', async () => {
+  it('Should call HttpClient with correct values', async () => {
     await sut.auth(authenticationParams);
 
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe('post');
-  });
-
-  it('Should call HttpClient with correct body', async () => {
-    await sut.auth(authenticationParams);
-
     expect(httpClientSpy.body).toEqual(authenticationParams);
   });
 

@@ -25,16 +25,11 @@ describe('RemoteAddAccount', () => {
     sut = new RemoteAddAccount(url, httpClientSpy);
   });
 
-  it('Should call HttpClient with correct URL and method', async () => {
+  it('Should call HttpClient with correct values', async () => {
     await sut.add(addAccountParams);
 
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe('post');
-  });
-
-  it('Should call HttpClient with correct body', async () => {
-    await sut.add(addAccountParams);
-
     expect(httpClientSpy.body).toEqual(addAccountParams);
   });
 
