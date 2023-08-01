@@ -1,4 +1,5 @@
 import ApiContext from '@/application/contexts/api/api-context'
+import { AccessDeniedError } from '@/domain/errors'
 import { type AccountModel } from '@/domain/models'
 import { LoadSurveyResultSpy, SaveSurveyResultSpy, mockAccountModel } from '@/domain/test'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -171,4 +172,14 @@ describe('SurveyResult Component', () => {
   //   expect(screen.getByTestId('error')).toHaveTextContent(error.message)
   //   expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
   // })
+
+  it('Should logout on AccessDeniedError', async () => {
+    jest.spyOn(saveSurveyResultSpy, 'save').mockRejectedValueOnce(new AccessDeniedError())
+    await waitFor(() => screen.getByTestId('survey-result'))
+    const answerWrap = screen.queryAllByTestId('answer-wrap')
+    fireEvent.click(answerWrap[1])
+    await waitFor(() => screen.getByTestId('survey-result'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
+  })
 })
