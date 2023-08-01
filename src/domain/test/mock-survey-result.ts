@@ -2,7 +2,12 @@ import { faker } from '@faker-js/faker';
 import {
   type LoadSurveyResult,
   type LoadSurveyResultParams,
+  type SaveSurveyResultParams,
 } from '../usecases';
+
+export const mockSaveSurveyResultParams = (): SaveSurveyResultParams.Input => ({
+  answer: faker.word.words(10),
+});
 
 export const mockSurveyResultModel = (): LoadSurveyResultParams.Output => ({
   question: faker.word.words(10),
