@@ -1,6 +1,6 @@
 import { type RemoteSurveyResultModel } from '@/data/models';
 import { HttpStatusCodeParams, type HttpClient } from '@/data/protocols/http';
-import { AccessDeniedError } from '@/domain/errors';
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import {
   type SaveSurveyResult,
   type SaveSurveyResultParams,
@@ -22,10 +22,12 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
     });
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCodeParams.OutPut.ok:
+        return null;
       case HttpStatusCodeParams.OutPut.forbidden:
         throw new AccessDeniedError();
       default:
-        return null;
+        throw new UnexpectedError();
     }
   }
 }

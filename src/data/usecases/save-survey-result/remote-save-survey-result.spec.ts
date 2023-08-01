@@ -1,6 +1,6 @@
 import { HttpStatusCodeParams } from '@/data/protocols/http';
 import { HttpClientSpy } from '@/data/test';
-import { AccessDeniedError } from '@/domain/errors';
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import { mockSaveSurveyResultParams } from '@/domain/test';
 import { type SaveSurveyResultParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
@@ -38,5 +38,25 @@ describe('RemoteSaveSurveyResult', () => {
 
     const promise = sut.save(saveSurveyResultParams);
     await expect(promise).rejects.toThrow(new AccessDeniedError());
+  });
+
+  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+    httpClientSpy.response = {
+      statusCode: HttpStatusCodeParams.OutPut.notFound,
+    };
+
+    const promise = sut.save(saveSurveyResultParams);
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+    httpClientSpy.response = {
+      statusCode: HttpStatusCodeParams.OutPut.serverError,
+    };
+
+    const promise = sut.save(saveSurveyResultParams);
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
